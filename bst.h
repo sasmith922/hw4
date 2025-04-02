@@ -646,17 +646,24 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         // So we need to delete `node`, which now holds the value to remove, but is no longer where `parent` points.
 
         Node<Key, Value>* nodeParent = node->getParent();
-        Node<Key, Value>* child = node->getLeft() ? node->getLeft() : node->getRight();
+        Node<Key, Value>* child = nullptr;
+        if (node->getLeft() != nullptr) {
+            child = node->getLeft();
+        } else {
+            child = node->getRight();
+        }
 
-        if (child) {
+        if (child != nullptr) {
             child->setParent(nodeParent);
         }
 
+
+        Node<Key, Value>* nodeParent = node->getParent();
         if (node == root_) {
             root_ = child;
-        } else if (nodeParent->getLeft() == node) {
+        } else if (nodeParent && nodeParent->getLeft() == node) {
             nodeParent->setLeft(child);
-        } else if (nodeParent->getRight() == node) {
+        } else if (nodeParent != nullptr) {
             nodeParent->setRight(child);
         }
 
