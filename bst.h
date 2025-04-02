@@ -132,7 +132,7 @@ Node<Key, Value>* Node<Key, Value>::getParent() const
 template<typename Key, typename Value>
 Node<Key, Value>* Node<Key, Value>::getLeft() const
 {
-    std::cout << "calling getleft" << std::endl;
+    //std::cout << "calling getleft" << std::endl;
     return left_;
 }
 
@@ -542,7 +542,7 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
 template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::remove(const Key& key)
 {
-    std::cout << "remove called!" << std::endl;
+    //std::cout << "remove called!" << std::endl;
     // TODO
     // if(root_ == nullptr) // base case, empty tree
     // {
@@ -599,17 +599,17 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     // }
     // // done?
 
-    std::cout << "remove called!" << std::endl;
+    //std::cout << "remove called!" << std::endl;
 
     if (root_ == nullptr) {
-        std::cout << "Tree is empty" << std::endl;
+        //std::cout << "Tree is empty" << std::endl;
         return;
     }
 
     Node<Key, Value>* node = root_;
     Node<Key, Value>* parent = nullptr;
 
-    std::cout << "nodes init" << std::endl;
+    //std::cout << "nodes init" << std::endl;
 
     // Search for the node to remove
     while (node != nullptr && node->getKey() != key) {
@@ -620,13 +620,13 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
             node = node->getRight();
         }
     }
-    std::cout << "while finishes!" << std::endl;
+    //std::cout << "while finishes!" << std::endl;
 
     if (node == nullptr) return; // Key not found
 
     // Case 1: Node has two children
     if (node->getLeft() && node->getRight()) {
-        std::cout << "two children!" << std::endl;
+        //std::cout << "two children!" << std::endl;
         Node<Key, Value>* pred = predecessor(node);
         nodeSwap(node, pred);
         parent = node->getParent();  // Ensure parent is updated post swap
@@ -634,7 +634,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     }
 
     // Case 2 & 3: Node has at most one child
-    std::cout << "one child or leaf!" << std::endl;
+    //std::cout << "one child or leaf!" << std::endl;
     Node<Key, Value>* child = node->getLeft() ? node->getLeft() : node->getRight();
     if (child) child->setParent(node->getParent());
 
@@ -647,10 +647,10 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         parent->setRight(child);
     }
 
-    std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
+    //std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
     delete node;
     node = nullptr;
-    std::cout << "node deleted!" << std::endl;
+    //std::cout << "node deleted!" << std::endl;
 
 }
 
@@ -661,7 +661,7 @@ Node<Key, Value>*
 BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current) 
 {
     // TODO
-    std::cout << "predecessor called" << std::endl;
+    //std::cout << "predecessor called" << std::endl;
     if(current == nullptr) // base case
     {
         return nullptr; // is this right?
@@ -692,7 +692,7 @@ BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current)
         current = parent;
         parent = parent->getParent();
     }
-    std::cout << "predecessor works!" << std::endl;
+    //std::cout << "predecessor works!" << std::endl;
     return parent;
     
 }
@@ -701,41 +701,41 @@ template<class Key, class Value>
 Node<Key, Value>*
 BinarySearchTree<Key, Value>::successor(Node<Key, Value>* current) // mirrors predecessor
 {
-    std::cout << "successor called" << std::endl;
+    //std::cout << "successor called" << std::endl;
     if(current == nullptr)
     {
-        std::cout << "current is null" << std::endl;
+        //std::cout << "current is null" << std::endl;
         return nullptr;
     }
 
     if(current->getRight() != nullptr)
     {
-        std::cout << "Right subtree" << std::endl;
+        //std::cout << "Right subtree" << std::endl;
         Node<Key, Value>* node = current->getRight();
-        std::cout << "init node" << std::endl;
+        //std::cout << "init node" << std::endl;
         if(node == nullptr)
         {
-           std::cout << "segfautl error" << std::endl; 
+           //std::cout << "segfautl error" << std::endl; 
         }
         else{
-            std::cout << "NO segfault eror" << std::endl;
+            //std::cout << "NO segfault eror" << std::endl;
         }
         Node<Key, Value>* leftNode = node->getLeft();
-        std::cout << "left node init" << std::endl;
+        //std::cout << "left node init" << std::endl;
         if(leftNode == nullptr)
         {
-            std::cout << "left is NULL!" << std::endl;
+            //std::cout << "left is NULL!" << std::endl;
         }
         else{
-            std::cout << "left is NOT NULL!" << std::endl;
+            //std::cout << "left is NOT NULL!" << std::endl;
         }
         while(leftNode != nullptr)
         {
-            std::cout << "left" << std::endl;
+            //std::cout << "left" << std::endl;
             node = node->getLeft();
             
         }
-        std::cout << "return" << std::endl;
+        //std::cout << "return" << std::endl;
         return node;
     }
 
