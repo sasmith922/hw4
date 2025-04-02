@@ -697,6 +697,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         if (pred == nullptr) return;
 
         nodeSwap(node, pred);
+        node = pred;
 
         // Now node holds the predecessor’s old position and is ready for deletion
     }
