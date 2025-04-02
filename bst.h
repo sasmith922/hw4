@@ -250,6 +250,7 @@ protected:
     // Add helper functions here
     static Node<Key, Value>* successor(Node<Key, Value>* current); // TODO, should be like predecessor
     int getHeight(); // gets height of a tree, useful for finding balance
+    void clearNodes(Node<Key, Value>* node); // helper function for clear()
 
 protected:
     Node<Key, Value>* root_;
@@ -755,21 +756,35 @@ void BinarySearchTree<Key, Value>::clear()
         return;
     }
 
-    // post-order traversal deleting each node
+    /*
+        add description of why we have clear like this
 
-    BinarySearchTree<Key, Value> leftSubtree;
-    leftSubtree.root_ = root_->getLeft();
-    leftSubtree.clear();
 
-    BinarySearchTree<Key, Value> rightSubtree;
-    rightSubtree.root_ = root_->getRight();
-    rightSubtree.clear();
 
-    delete root_;
+
+
+    */
+
+
+    if (root_->getParent() == nullptr) // we actually want to fully clear 
+    {
+        clearNodes(root_); // helper function performs post-order deletion
+    }
+
     root_ = nullptr;
 
     // done?
 
+}
+
+template<typename Key, typename Value>
+void BinarySearchTree<Key, Value>::clearNodes(Node<Key, Value>* node) // helper for clear
+{
+    if (node == nullptr) return;
+
+    clearNodes(node->getLeft());
+    clearNodes(node->getRight());
+    delete node;
 }
 
 
