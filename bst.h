@@ -531,6 +531,14 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
         parent->setRight(newNode);
     }
 
+    // Sanity check: verify bidirectional connection
+    if (newNode->getParent() != nullptr) {
+        if (newNode->getParent()->getLeft() != newNode &&
+            newNode->getParent()->getRight() != newNode) {
+            std::cout << "[BUG] Parent pointer is set, but parent doesn't point to this node!\n";
+        }
+    }
+
 }
 
 
@@ -654,6 +662,8 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
 
         // disconnecting parent from node, potential dangling pointers bc node is still pointed to
+        // maybe delete this part
+        
         if (node->getParent() != nullptr) 
         {
             if (node->getParent()->getLeft() == node) {
