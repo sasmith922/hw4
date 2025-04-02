@@ -633,75 +633,37 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     if (node == nullptr) return; // Key not found
 
     // Case 1: Node has two children
-    if (node->getLeft() && node->getRight()) {
+    if (node->getLeft() != nullptr && node->getRight() != nullptr) {
         Node<Key, Value>* pred = predecessor(node);
-        if (pred == nullptr)
-        {
-            return;
-        }
+        if (pred == nullptr) return;
 
         nodeSwap(node, pred);
 
-        // Now `pred` is at the original position of `node`, and `node` has moved to pred's original position.
-        // So we need to delete `node`, which now holds the value to remove, but is no longer where `parent` points.
-
-        Node<Key, Value>* nodeParent = node->getParent();
-        Node<Key, Value>* child = nullptr;
-        if (node->getLeft() != nullptr) {
-            child = node->getLeft();
-        } else {
-            child = node->getRight();
-        }
-
-        if (child != nullptr) {
-            child->setParent(nodeParent);
-        }
-
-
-        Node<Key, Value>* nodeParent = node->getParent();
-        if (node == root_) {
-            root_ = child;
-        } else if (nodeParent && nodeParent->getLeft() == node) {
-            nodeParent->setLeft(child);
-        } else if (nodeParent != nullptr) {
-            nodeParent->setRight(child);
-        }
-
-
-        // disconnecting parent from node, potential dangling pointers bc node is still pointed to
-        // maybe delete this part
-        
-        if (node->getParent() != nullptr) 
-        {
-            if (node->getParent()->getLeft() == node) {
-                node->getParent()->setLeft(nullptr);
-            } else if (node->getParent()->getRight() == node) {
-                node->getParent()->setRight(nullptr);
-            }
-        }
-
-        delete node;
-        return;
+        // Now node holds the predecessor’s old position and is ready for deletion
     }
 
     // Case 2 & 3: Node has at most one child
-    //std::cout << "one child or leaf!" << std::endl;
-    Node<Key, Value>* child = node->getLeft() ? node->getLeft() : node->getRight();
-    if (child) child->setParent(node->getParent());
-
-    // Fix the parent's pointer BEFORE deleting the node
-    if (node == root_) {
-        root_ = child;
-    } else if (parent && parent->getLeft() == node) {
-        parent->setLeft(child);
-    } else if (parent) {
-        parent->setRight(child);
+    Node<Key, Value>* child = nullptr;
+    if (node->getLeft() != nullptr) {
+        child = node->getLeft();
+    } else {
+        child = node->getRight();
     }
 
-    //std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
+    if (child != nullptr) {
+        child->setParent(node->getParent());
+    }
+
+    Node<Key, Value>* nodeParent = node->getParent();
+    if (node == root_) {
+        root_ = child;
+    } else if (nodeParent != nullptr && nodeParent->getLeft() == node) {
+        nodeParent->setLeft(child);
+    } else if (nodeParent != nullptr) {
+        nodeParent->setRight(child);
+    }
+
     delete node;
-    node = nullptr;
-    //std::cout << "node deleted!" << std::endl;
 
 }
 
