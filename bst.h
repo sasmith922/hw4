@@ -722,14 +722,14 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         nodeParent->setRight(child);
     }
 
-    // Extra safety: disconnect parent if it still points to this node
-    if (nodeParent != nullptr) {
-        if (nodeParent->getLeft() == node) {
-            nodeParent->setLeft(nullptr);
-        } else if (nodeParent->getRight() == node) {
-            nodeParent->setRight(nullptr);
-        }
-    }
+    // // Extra safety: disconnect parent if it still points to this node
+    // if (nodeParent != nullptr) {
+    //     if (nodeParent->getLeft() == node) {
+    //         nodeParent->setLeft(nullptr);
+    //     } else if (nodeParent->getRight() == node) {
+    //         nodeParent->setRight(nullptr);
+    //     }
+    // }
 
     delete node;
 
