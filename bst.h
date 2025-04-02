@@ -663,6 +663,15 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         nodeParent->setRight(child);
     }
 
+    // disconnect node from its parent to avoid dangling pointer
+    if (nodeParent != nullptr) {
+        if (nodeParent->getLeft() == node) {
+            nodeParent->setLeft(nullptr);
+        } else if (nodeParent->getRight() == node) {
+            nodeParent->setRight(nullptr);
+        }
+    }
+
     delete node;
 
 }
