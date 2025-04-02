@@ -550,85 +550,144 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
 template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::remove(const Key& key)
 {
-    //std::cout << "remove called!" << std::endl;
-    // TODO
-    // if(root_ == nullptr) // base case, empty tree
-    // {
+    // //std::cout << "remove called!" << std::endl;
+    // // TODO
+    // // if(root_ == nullptr) // base case, empty tree
+    // // {
+    // //     return;
+    // // }
+
+    // // BinarySearchTree<Key, Value> subtree;
+
+    // // if(root_->getKey() == key) // found the node to be removed
+    // // {
+    // //     if(root_->getLeft() == nullptr && root_->getRight() == nullptr) // leaf node, no children
+    // //     {
+    // //         delete root_;
+    // //         root_ = nullptr; // reset root node
+    // //         return;
+    // //     }
+    // //     if(root_->getLeft() != nullptr && root_->getRight() == nullptr) // only a left child
+    // //     {
+    // //         Node<Key, Value>* leftChild = root_->getLeft();
+    // //         leftChild->setParent(root_->getParent()); // update childs parent pointer to be roots parent
+    // //         delete root_;
+    // //         root_ = leftChild;
+    // //         return;
+
+    // //     }
+    // //     if(root_->getLeft() == nullptr && root_->getRight() != nullptr) // only a right child
+    // //     {
+    // //         Node<Key, Value>* rightChild = root_->getRight();
+    // //         rightChild->setParent(root_->getParent()); // update childs parent pointer to be roots parent
+    // //         delete root_;
+    // //         root_ = rightChild;
+    // //         return;
+    // //     }
+    // //     // root has 2 children
+    // //     Node<Key, Value>* pred = predecessor(root_);
+    // //     nodeSwap(root_, pred); // swap root w predeccessor 
+    // //     subtree.root_ = root_->getLeft(); // node we want to remove is now child in left subtree
+    // //     subtree.remove(key); // recursively remove node from left subtree
+    // //     root_->setLeft(subtree.root_);
+    // //     return;
+    // // }
+
+    // // if(root_->getKey() > key) // recurse down left subtree
+    // // {
+    // //     subtree.root_ = root_->getLeft();
+    // //     subtree.remove(key);
+    // //     root_->setLeft(subtree.root_);
+    // // }
+    // // if(root_->getKey() < key) // recurse down right subtree
+    // // {
+    // //     subtree.root_ = root_->getRight();
+    // //     subtree.remove(key);
+    // //     root_->setRight(subtree.root_);
+    // // }
+    // // // done?
+
+    // //std::cout << "remove called!" << std::endl;
+
+    // if (root_ == nullptr) {
+    //     //std::cout << "Tree is empty" << std::endl;
     //     return;
     // }
 
-    // BinarySearchTree<Key, Value> subtree;
+    // Node<Key, Value>* node = root_;
+    // //Node<Key, Value>* parent = nullptr;
 
-    // if(root_->getKey() == key) // found the node to be removed
-    // {
-    //     if(root_->getLeft() == nullptr && root_->getRight() == nullptr) // leaf node, no children
-    //     {
-    //         delete root_;
-    //         root_ = nullptr; // reset root node
-    //         return;
-    //     }
-    //     if(root_->getLeft() != nullptr && root_->getRight() == nullptr) // only a left child
-    //     {
-    //         Node<Key, Value>* leftChild = root_->getLeft();
-    //         leftChild->setParent(root_->getParent()); // update childs parent pointer to be roots parent
-    //         delete root_;
-    //         root_ = leftChild;
-    //         return;
+    // //std::cout << "nodes init" << std::endl;
 
+    // // Search for the node to remove
+    // while (node != nullptr && node->getKey() != key) {
+    //     parent = node;
+    //     if (key < node->getKey()) {
+    //         node = node->getLeft();
+    //     } else {
+    //         node = node->getRight();
     //     }
-    //     if(root_->getLeft() == nullptr && root_->getRight() != nullptr) // only a right child
-    //     {
-    //         Node<Key, Value>* rightChild = root_->getRight();
-    //         rightChild->setParent(root_->getParent()); // update childs parent pointer to be roots parent
-    //         delete root_;
-    //         root_ = rightChild;
-    //         return;
-    //     }
-    //     // root has 2 children
-    //     Node<Key, Value>* pred = predecessor(root_);
-    //     nodeSwap(root_, pred); // swap root w predeccessor 
-    //     subtree.root_ = root_->getLeft(); // node we want to remove is now child in left subtree
-    //     subtree.remove(key); // recursively remove node from left subtree
-    //     root_->setLeft(subtree.root_);
-    //     return;
+    // }
+    // //std::cout << "while finishes!" << std::endl;
+
+    // if (node == nullptr) return; // Key not found
+
+    // // Case 1: Node has two children
+    // if (node->getLeft() != nullptr && node->getRight() != nullptr) {
+    //     Node<Key, Value>* pred = predecessor(node);
+    //     if (pred == nullptr) return;
+
+    //     nodeSwap(node, pred);
+
+    //     // Now node holds the predecessor’s old position and is ready for deletion
     // }
 
-    // if(root_->getKey() > key) // recurse down left subtree
-    // {
-    //     subtree.root_ = root_->getLeft();
-    //     subtree.remove(key);
-    //     root_->setLeft(subtree.root_);
+    // // Case 2 & 3: Node has at most one child
+    // Node<Key, Value>* child = nullptr;
+    // if (node->getLeft() != nullptr) {
+    //     child = node->getLeft();
+    // } else {
+    //     child = node->getRight();
     // }
-    // if(root_->getKey() < key) // recurse down right subtree
-    // {
-    //     subtree.root_ = root_->getRight();
-    //     subtree.remove(key);
-    //     root_->setRight(subtree.root_);
+
+    // if (child != nullptr) {
+    //     child->setParent(node->getParent());
     // }
-    // // done?
 
-    //std::cout << "remove called!" << std::endl;
+    // Node<Key, Value>* nodeParent = node->getParent();
+    // if (node == root_) {
+    //     root_ = child;
+    // } else if (nodeParent != nullptr && nodeParent->getLeft() == node) {
+    //     nodeParent->setLeft(child);
+    // } else if (nodeParent != nullptr) {
+    //     nodeParent->setRight(child);
+    // }
 
-    if (root_ == nullptr) {
-        //std::cout << "Tree is empty" << std::endl;
-        return;
-    }
+    // // disconnect node from its parent to avoid dangling pointer
+    // if (nodeParent != nullptr) {
+    //     if (nodeParent->getLeft() == node) {
+    //         nodeParent->setLeft(nullptr);
+    //     } else if (nodeParent->getRight() == node) {
+    //         nodeParent->setRight(nullptr);
+    //     }
+    // }
+
+    // delete node;
+
+
+
+    if (root_ == nullptr) return;
 
     Node<Key, Value>* node = root_;
-    Node<Key, Value>* parent = nullptr;
-
-    //std::cout << "nodes init" << std::endl;
 
     // Search for the node to remove
     while (node != nullptr && node->getKey() != key) {
-        parent = node;
         if (key < node->getKey()) {
             node = node->getLeft();
         } else {
             node = node->getRight();
         }
     }
-    //std::cout << "while finishes!" << std::endl;
 
     if (node == nullptr) return; // Key not found
 
@@ -659,11 +718,11 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         root_ = child;
     } else if (nodeParent != nullptr && nodeParent->getLeft() == node) {
         nodeParent->setLeft(child);
-    } else if (nodeParent != nullptr) {
+    } else if (nodeParent != nullptr && nodeParent->getRight() == node) {
         nodeParent->setRight(child);
     }
 
-    // disconnect node from its parent to avoid dangling pointer
+    // Extra safety: disconnect parent if it still points to this node
     if (nodeParent != nullptr) {
         if (nodeParent->getLeft() == node) {
             nodeParent->setLeft(nullptr);
@@ -673,6 +732,9 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     }
 
     delete node;
+
+
+
 
 }
 
