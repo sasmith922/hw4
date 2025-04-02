@@ -65,7 +65,7 @@ int getLength(Node* root)
 
     if(leftDepth > 0 && rightDepth > 0) // left and right have subtrees
     {
-        if(leftDepth < rightDepth) // gets smaller height between left and right (right case also accounts for equal)
+        if(leftDepth > rightDepth) // gets smaller height between left and right (right case also accounts for equal)
         {
             return leftDepth + 1;
         }

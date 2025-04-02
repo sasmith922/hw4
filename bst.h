@@ -626,11 +626,34 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
     // Case 1: Node has two children
     if (node->getLeft() && node->getRight()) {
-        //std::cout << "two children!" << std::endl;
         Node<Key, Value>* pred = predecessor(node);
+        if (pred == nullptr)
+        {
+            return;
+        }
+
         nodeSwap(node, pred);
-        parent = node->getParent();  // Ensure parent is updated post swap
-        node = pred;                 // Work with the swapped node directly
+
+        // Now `pred` is at the original position of `node`, and `node` has moved to pred's original position.
+        // So we need to delete `node`, which now holds the value to remove, but is no longer where `parent` points.
+
+        Node<Key, Value>* nodeParent = node->getParent();
+        Node<Key, Value>* child = node->getLeft() ? node->getLeft() : node->getRight();
+
+        if (child) {
+            child->setParent(nodeParent);
+        }
+
+        if (node == root_) {
+            root_ = child;
+        } else if (nodeParent->getLeft() == node) {
+            nodeParent->setLeft(child);
+        } else if (nodeParent->getRight() == node) {
+            nodeParent->setRight(child);
+        }
+
+        delete node;
+        return;
     }
 
     // Case 2 & 3: Node has at most one child
@@ -710,32 +733,14 @@ BinarySearchTree<Key, Value>::successor(Node<Key, Value>* current) // mirrors pr
 
     if(current->getRight() != nullptr)
     {
-        //std::cout << "Right subtree" << std::endl;
         Node<Key, Value>* node = current->getRight();
-        //std::cout << "init node" << std::endl;
-        if(node == nullptr)
-        {
-           //std::cout << "segfautl error" << std::endl; 
-        }
-        else{
-            //std::cout << "NO segfault eror" << std::endl;
-        }
-        Node<Key, Value>* leftNode = node->getLeft();
-        //std::cout << "left node init" << std::endl;
-        if(leftNode == nullptr)
-        {
-            //std::cout << "left is NULL!" << std::endl;
-        }
-        else{
-            //std::cout << "left is NOT NULL!" << std::endl;
-        }
-        while(leftNode != nullptr)
+        
+        while(node->getLeft() != nullptr)
         {
             //std::cout << "left" << std::endl;
             node = node->getLeft();
             
         }
-        //std::cout << "return" << std::endl;
         return node;
     }
 
@@ -783,7 +788,7 @@ void BinarySearchTree<Key, Value>::clear()
     rightSubtree.root_ = root_->getRight();
     rightSubtree.clear();
 
-    //delete root_;
+    delete root_;
     root_ = nullptr;
 
     // done?
