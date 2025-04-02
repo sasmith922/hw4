@@ -773,20 +773,24 @@ template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::clear()
 {
     // TODO
-    if(root_ == nullptr) // base case, empty tree
-    {
-        return;
+    if (root_ == nullptr) return;
+
+    // Recursive post-order delete written directly
+    if (root_->getLeft() != nullptr) {
+        Node<Key, Value>* leftChild = root_->getLeft();
+        root_->setLeft(nullptr);
+        BinarySearchTree<Key, Value> leftTree;
+        leftTree.root_ = leftChild;
+        leftTree.clear();
     }
 
-    // post-order traversal deleting each node
-
-    BinarySearchTree<Key, Value> leftSubtree;
-    leftSubtree.root_ = root_->getLeft();
-    leftSubtree.clear();
-
-    BinarySearchTree<Key, Value> rightSubtree;
-    rightSubtree.root_ = root_->getRight();
-    rightSubtree.clear();
+    if (root_->getRight() != nullptr) {
+        Node<Key, Value>* rightChild = root_->getRight();
+        root_->setRight(nullptr);
+        BinarySearchTree<Key, Value> rightTree;
+        rightTree.root_ = rightChild;
+        rightTree.clear();
+    }
 
     delete root_;
     root_ = nullptr;
