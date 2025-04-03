@@ -226,8 +226,8 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         return;
     }
 
-    Node<Key, Value>* node = this->root_;
-    Node<Key, Value>* parent = nullptr;
+    AVLNode<Key, Value>* node = this->root_;
+    AVLNode<Key, Value>* parent = nullptr;
 
     //traverse to node
     while(node != nullptr && node->getKey() != key) 
@@ -246,7 +246,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     // check if node has 2 children
     if (node->getLeft() && node->getRight()) 
     {
-        Node<Key, Value>* pred = BinarySearchTree<Key, Value>::predecessor(node);
+        AVLNode<Key, Value>* pred = BinarySearchTree<Key, Value>::predecessor(node);
         BinarySearchTree<Key, Value>::nodeSwap(node, pred);
         parent = node->getParent(); 
         node = pred;
