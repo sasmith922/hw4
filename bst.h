@@ -614,28 +614,30 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     // Case 1: Node has two children
     if (node->getLeft() && node->getRight()) 
     {
-        //std::cout << "two children!" << std::endl;
         Node<Key, Value>* pred = predecessor(node);
         if (pred == nullptr)
         {
             return;
         }
+
         nodeSwap(node, pred);
-        
-        Node<Key, Value>* predParent = pred->getParent();
-        if(predParent != nullptr) 
+
+        // Now 'node' points to the predecessor in its original spot
+        // Disconnect it properly
+        Node<Key, Value>* parent = node->getParent();
+        if (parent != nullptr) 
         {
-            if(predParent->getLeft() == pred) 
+            if (parent->getLeft() == node) 
             {
-                predParent->setLeft(nullptr);
+                parent->setLeft(nullptr);
             } 
-            else if(predParent->getRight() == pred) 
+            else if (parent->getRight() == node) 
             {
-                predParent->setRight(nullptr);
+                parent->setRight(nullptr);
             }
         }
 
-        delete pred;
+        delete node;
         return;
 
 
