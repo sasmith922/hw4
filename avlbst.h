@@ -140,8 +140,8 @@ void AVLNode<Key, Value>::rotateLeft(AVLNode<Key, Value>* node) // mirror of rot
     x->setparent(parent);
     x->setLeft(y);
     y->setParent(x);
-    y->setright(b);
-    b->setparent(y);
+    y->setRight(b);
+    b->setParent(y);
 
 }
 
@@ -196,7 +196,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 {
     // TODO
 
-    BinarySearchTree<Key, Value>::insert(key); // do same insert as BST
+    BinarySearchTree<Key, Value>::insert(new_item); // do same insert as BST
 
     if(!BinarySearchTree<Key, Value>::isBalanced()) // check tree balance
     {
@@ -291,6 +291,11 @@ template<class Key, class Value>
 void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* node, int8_t diff)
 {
 
+    if(node == nullptr)
+    {
+        return;
+    }
+
     AVLNode<Key, Value>* parent = node->getParent();
     AVLNode<Key, Value>* grandp = parent->getParent();
 
@@ -302,7 +307,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* node, int8_t diff)
     if(parent == grandp->getLeft()) // p is left child of g
     {
 
-        grandp.balance_ += -1 // update balance, correct???
+        grandp->updateBalance(-1) // update balance, correct???
         if(grandp->getBalance() == 0)
         {
             return;
@@ -316,7 +321,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* node, int8_t diff)
             if(node == parent->getLeft()) // zig-zig case
             {
                 rotateRight(grandp);
-                setBalance(parent);
+                parent->setBalance(0); // edit
                 grandp->setBalance(0);
             }
             if(node == parent->getRight()) // zig-zag case
@@ -348,7 +353,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* node, int8_t diff)
 
 
     }
-    if(parent == grandp->getLeft()) // p is right child of g, mirror of above
+    if(parent == grandp->getRight()) // p is right child of g, mirror of above
     {
 
 
@@ -383,7 +388,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     }
     
     AVLNode<Key, Value>* child = node; // fix, need to find out which child we are operating on, will we have to write more mirror cases??
-    AVLNode<Key, Value>* grandp = parent->getparent();
+    AVLNode<Key, Value>* grandch = parent->getparent();
 
 
 
@@ -399,46 +404,46 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             if(child->getBalance() == -1) // zig-zig case
             {
                 rotateRight(node);
-                node.setBalance(0);
-                child.setBalance(0);
+                node->setBalance(0);
+                child->setBalance(0);
                 removeFix(parent, ndiff); // recursive call
             }
             if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
                 rotateRight(node);
-                node.setBalance(-1);
-                child.setBalance(1);
+                node->setBalance(-1);
+                child->setBalance(1);
             }
             if(child->getBalance() == 1) // zig-zag case
             {
-                int8_t grandpBalance = grandp->getBalance();
-                grandp = child->getRight();
+                int8_t grandchBalance = grandch->getBalance();
+                grandch = child->getRight();
                 rotateLeft(child);
                 rotateRight(node);
-                if(grandpBalance == 1)
+                if(grandchBalance == 1)
                 {
-                    node.setBalance(0);
-                    child.setBalance(-1);
-                    grandp->setBalance(0);
+                    node->setBalance(0);
+                    child->setBalance(-1);
+                    grandch->setBalance(0);
                 }
-                if(grandpBalance == 0)
+                if(grandchBalance == 0)
                 {
-                    node.setBalance(0);
-                    child.setBalance(0);
-                    grandp->setBalance(0);
+                    node->setBalance(0);
+                    child->setBalance(0);
+                    grandch->setBalance(0);
                 }
-                if(grandpBalance == -1)
+                if(grandchBalance == -1)
                 {
-                    node.setBalance(1);
-                    child.setBalance(0);
-                    grandp->setBalance(0);
+                    node->setBalance(1);
+                    child->setBalance(0);
+                    grandch->setBalance(0);
                 }
             }
             removeFix(parent, ndiff); // recursive call
         }
         if(node->getBalance() + diff == -1)
         {
-            node->setBalance = -1;
+            node->setBalance(-1);
         }
         if(node->getBalance() + diff == 0)
         {
@@ -451,6 +456,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     if(diff == 1) // mirrored
     {
 
+        
 
 
     }
