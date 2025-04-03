@@ -230,18 +230,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     AVLNode<Key, Value>* parent = nullptr;
 
     //traverse to node
-    while(node != nullptr && node->getKey() != key) 
-    {
-        parent = node;
-        if(key < node->getKey()) 
-        {
-            node = node->getLeft();
-        } 
-        else 
-        {
-            node = node->getRight();
-        }
-    }
+    BinarySearchTree<Key, Value>::internalFind(key);
 
     // check if node has 2 children
     if (node->getLeft() && node->getRight()) 
@@ -252,34 +241,36 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         node = pred;
     }
 
-
-
     // check balance
     if(BinarySearchTree<Key, Value>::isBalanced()) // checks if tree is balanced
     {
         return; // we can skip balancing process
     }
 
+   
     parent = static_cast<AVLNode<Key, Value>*>(node->Node<Key, Value>::getParent());
-
+    int8_t diff = 0;
     if(parent != nullptr)
     {
         if(parent->getLeft() == node) // node is a left child
         {
-            node->updateBalance(1);
+            diff = 1;
+            parent->updateBalance(diff);
         }
         if(parent->getRight() == node) // node is a right child
         {
-            node->updateBalance(-1);
+            diff = -1
+            parent->updateBalance(diff);
         }
     }
 
     // remove node
-
+    BinarySearchTree<Key, Value>::remove(key);
 
     // patch tree
+    removeFix(parent, diff);
 
-
+    //done?
 
 }
 
