@@ -198,16 +198,37 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 {
     // TODO
 
-    BinarySearchTree<Key, Value>::insert(new_item); // do same insert as BST
-
-    if(!BinarySearchTree<Key, Value>::isBalanced()) // check tree balance
+    if(this->root_ == nullptr) // empty tree
     {
-        //insertFix(); // balance in helper function
-
-
-
-
+        this->root_ = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
+        return;
     }
+
+    BinarySearchTree<Key, Value>::insert(new_item); // insert same as bst
+    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(new_item.first)); // node we inserted
+    AVLNode<Key, Value>* parent = node->getParent();
+    
+    // update balances
+    node->setBalance(0);
+    if(parent->getBalance() == -1 || parent->getBalance() == 1)
+    {
+        parent->setBalance(0);
+    }
+    else if(parent->getBalance() == 0)
+    {
+        if(parent->getLeft() == node) // node is left of parent
+        {
+            parent->setBalance(-1);
+        }
+        if(parent->getRight() == node) // node is right of parent
+        {
+            parent->setBalance(1);
+        }
+        insertFix(parent, node); // call insertFix!!!
+    }
+
+
+
 }
 
 /*
@@ -230,7 +251,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     AVLNode<Key, Value>* parent = nullptr;
 
     //traverse to node
-    BinarySearchTree<Key, Value>::internalFind(key);
+    node = BinarySearchTree<Key, Value>::internalFind(key);
 
     // check if node has 2 children
     if (node->getLeft() && node->getRight()) 
