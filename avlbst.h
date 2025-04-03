@@ -385,7 +385,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     }
     
     AVLNode<Key, Value>* child = node; // fix, need to find out which child we are operating on, will we have to write more mirror cases??
-    AVLNode<Key, Value>* grandch = parent->getparent();
+    AVLNode<Key, Value>* grandch = parent->getParent();
 
 
 
