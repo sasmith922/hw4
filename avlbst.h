@@ -36,8 +36,7 @@ public:
     virtual AVLNode<Key, Value>* getRight() const override;
 
     // helper functions
-    void rotateLeft(AVLNode<Key, Value>* node); // TODO
-    void rotateRight(AVLNode<Key, Value>* node); // TODO
+    
 
 protected:
     int8_t balance_;    // effectively a signed char
@@ -127,43 +126,6 @@ AVLNode<Key, Value> *AVLNode<Key, Value>::getRight() const
 
 // helper functions
 
-template<class Key, class Value>
-void AVLNode<Key, Value>::rotateLeft(AVLNode<Key, Value>* node) // mirror of rotateRight
-{
-    // TODO
-    AVLNode<Key, Value>* parent = node->getParent();
-    AVLNode<Key, Value>* y = node;
-    AVLNode<Key, Value>* x = node->getRight();
-    AVLNode<Key, Value>* b = x->getLeft();
-
-    parent->setRight(x);
-    x->setparent(parent);
-    x->setLeft(y);
-    y->setParent(x);
-    y->setRight(b);
-    b->setParent(y);
-
-}
-
-template<class Key, class Value>
-void AVLNode<Key, Value>::rotateRight(AVLNode<Key, Value>* node)
-{
-    // TODO
-
-    AVLNode<Key, Value>* parent = node->getParent();
-    AVLNode<Key, Value>* y = node;
-    AVLNode<Key, Value>* x = node->getLeft();
-    AVLNode<Key, Value>* b = x->getRight();
-
-    parent->setLeft(x);
-    x->setParent(parent);
-    x->setRight(y);
-    y->setParent(x);
-    y->setLeft(b);
-    b->setParent(y);
-    
-}
-
 
 /*
   -----------------------------------------------
@@ -184,8 +146,48 @@ protected:
     // Add helper functions here
     void insertFix(AVLNode<Key, Value>* node, int8_t diff); // TODO, balances tree after insertion
     void removeFix(AVLNode<Key, Value>* node, int8_t diff); // TODO, balances tree after removal
+    void rotateLeft(AVLNode<Key, Value>* node); // TODO
+    void rotateRight(AVLNode<Key, Value>* node); // TODO
     
 };
+
+
+template<class Key, class Value>
+void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value>* node) // mirror of rotateRight
+{
+    // TODO
+    AVLNode<Key, Value>* parent = node->getParent();
+    AVLNode<Key, Value>* y = node;
+    AVLNode<Key, Value>* x = node->getRight();
+    AVLNode<Key, Value>* b = x->getLeft();
+
+    parent->setRight(x);
+    x->setparent(parent);
+    x->setLeft(y);
+    y->setParent(x);
+    y->setRight(b);
+    b->setParent(y);
+
+}
+
+template<class Key, class Value>
+void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value>* node)
+{
+    // TODO
+
+    AVLNode<Key, Value>* parent = node->getParent();
+    AVLNode<Key, Value>* y = node;
+    AVLNode<Key, Value>* x = node->getLeft();
+    AVLNode<Key, Value>* b = x->getRight();
+
+    parent->setLeft(x);
+    x->setParent(parent);
+    x->setRight(y);
+    y->setParent(x);
+    y->setLeft(b);
+    b->setParent(y);
+    
+}
 
 /*
  * Recall: If key is already in the tree, you should 
@@ -249,7 +251,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
 
     // check balance
-    if(BinarySearchTree<Key, Value>::isBalanced()) // checks if tree is balanced
+    if(isBalanced()) // checks if tree is balanced
     {
         return; // we can skip balancing process
     }
@@ -258,13 +260,13 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     if(parent != nullptr)
     {
-        if(parent->BinarySearchTree<Key, Value>::getLeft() == node) // node is a left child
+        if(parent->getLeft() == node) // node is a left child
         {
-            node->updateBalance(1);
+            node->setBalance(1);
         }
-        if(parent->BinarySearchTree<Key, Value>::getRight() == node) // node is a right child
+        if(parent->getRight() == node) // node is a right child
         {
-            node->updateBalance(-1);
+            node->setBalance(-1);
         }
     }
 
