@@ -372,8 +372,51 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
     }
     if(parent == grandp->getRight()) // p is right child of g, mirror of above
     {
+        grandp->updateBalance(1); 
+        if(grandp->getBalance() == 0)
+        {
+            return;
+        }
+        if(grandp->getBalance() == 1)
+        {
+            //insertFix(grandp, parent); // this is not correct but is how its written in slides
+        }
+        if(grandp->getBalance() == 2)
+        {
+            if(node == parent->getRight()) // zig-zig case
+            {
+                rotateLeft(grandp);
+                parent->setBalance(0); 
+                grandp->setBalance(0);
+            }
+            if(node == parent->getLeft()) // zig-zag case
+            {
+                rotateRight(parent);
+                rotateLeft(grandp);
+                if(node->getBalance() == 1)
+                {
+                    parent->setBalance(0);
+                    grandp->setBalance(-1);
+                    node->setBalance(0);
+                }
+                if(node->getBalance() == 0)
+                {
+                    parent->setBalance(0);
+                    grandp->setBalance(0);
+                    node->setBalance(0);
+                    
+                }
+                if(node->getBalance() == -1)
+                {
+                    parent->setBalance(-1);
+                    grandp->setBalance(0);
+                    node->setBalance(0);
+                }
 
+            }
+        }
 
+    // done?
 
     }
 
@@ -415,8 +458,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
 
         if(node->getBalance() + diff == -2) // heavy on left
         {
-            // do we need another mirror for child?????
-
             
             if(child->getBalance() == -1) // zig-zig case
             {
@@ -470,10 +511,61 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
 
 
     }
-    if(diff == 1) // mirrored
+    if(diff == 1) // mirrored, operating on right child
     {
 
-        
+        if(node->getBalance() + diff == 2) // heavy on right
+        {
+            
+            if(child->getBalance() == 1) // zig-zig case
+            {
+                rotateLeft(node);
+                node->setBalance(0);
+                child->setBalance(0);
+                removeFix(parent, ndiff); // recursive call
+            }
+            if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
+            {
+                rotateRight(node);
+                node->setBalance(1);
+                child->setBalance(-1);
+            }
+            if(child->getBalance() == -1) // zig-zag case
+            {
+                int8_t grandchBalance = grandch->getBalance();
+                grandch = child->getLeft();
+                rotateRight(child);
+                rotateLeft(node);
+                if(grandchBalance == -1)
+                {
+                    node->setBalance(0);
+                    child->setBalance(1);
+                    grandch->setBalance(0);
+                }
+                if(grandchBalance == 0)
+                {
+                    node->setBalance(0);
+                    child->setBalance(0);
+                    grandch->setBalance(0);
+                }
+                if(grandchBalance == 1)
+                {
+                    node->setBalance(-1);
+                    child->setBalance(0);
+                    grandch->setBalance(0);
+                }
+            }
+            removeFix(parent, ndiff); // recursive call
+        }
+        if(node->getBalance() + diff == 1)
+        {
+            node->setBalance(1);
+        }
+        if(node->getBalance() + diff == 0)
+        {
+            node->setBalance(0);
+            removeFix(parent, ndiff); // recursive call
+        }
 
 
     }
