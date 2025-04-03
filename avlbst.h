@@ -162,7 +162,7 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value>* node) // mirror of rot
     AVLNode<Key, Value>* b = x->getLeft();
 
     parent->setRight(x);
-    x->setparent(parent);
+    x->setParent(parent);
     x->setLeft(y);
     y->setParent(x);
     y->setRight(b);
@@ -202,7 +202,11 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 
     if(!BinarySearchTree<Key, Value>::isBalanced()) // check tree balance
     {
-        insertFix(); // balance in helper function
+        //insertFix(); // balance in helper function
+
+
+
+
     }
 }
 
@@ -217,12 +221,12 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     // traverse to node (and swap if necessary)
     // should be same as BST remove
-    if(root_ == nullptr) // tree is empty
+    if(this->root_ == nullptr) // tree is empty
     {
         return;
     }
 
-    Node<Key, Value>* node = root_;
+    Node<Key, Value>* node = this->root_;
     Node<Key, Value>* parent = nullptr;
 
     //traverse to node
@@ -242,8 +246,8 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     // check if node has 2 children
     if (node->getLeft() && node->getRight()) 
     {
-        Node<Key, Value>* pred = predecessor(node);
-        nodeSwap(node, pred);
+        Node<Key, Value>* pred = BinarySearchTree<Key, Value>::predecessor(node);
+        BinarySearchTree<Key, Value>::nodeSwap(node, pred);
         parent = node->getParent(); 
         node = pred;
     }
@@ -251,7 +255,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
 
     // check balance
-    if(isBalanced()) // checks if tree is balanced
+    if(BinarySearchTree<Key, Value>::isBalanced()) // checks if tree is balanced
     {
         return; // we can skip balancing process
     }
@@ -262,11 +266,11 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     {
         if(parent->getLeft() == node) // node is a left child
         {
-            node->setBalance(1);
+            node->updateBalance(1);
         }
         if(parent->getRight() == node) // node is a right child
         {
-            node->setBalance(-1);
+            node->updateBalance(-1);
         }
     }
 
@@ -309,7 +313,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* node, int8_t diff)
     if(parent == grandp->getLeft()) // p is left child of g
     {
 
-        grandp->updateBalance(-1) // update balance, correct???
+        grandp->updateBalance(-1); // update balance, correct???
         if(grandp->getBalance() == 0)
         {
             return;
