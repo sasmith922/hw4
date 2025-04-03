@@ -259,7 +259,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         }
         if(parent->getRight() == node) // node is a right child
         {
-            diff = -1
+            diff = -1;
             parent->updateBalance(diff);
         }
     }
@@ -374,7 +374,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     int8_t ndiff = 0;
     if(parent != nullptr)
     {
-        if(parent->BinarySearchTree<Key, Value>::getLeft() == node) // node is a left child
+        if(parent->getLeft() == node) // node is a left child
         {
             ndiff = 1;
         }
