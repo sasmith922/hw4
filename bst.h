@@ -622,19 +622,24 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
         nodeSwap(node, pred);
 
-        // Now 'node' points to the predecessor in its original spot
-        // Disconnect it properly
+        // relinking pointers after nodeswap
+        Node<Key, Value>* child = node->getLeft(); // pred never has a right child
         Node<Key, Value>* parent = node->getParent();
-        if (parent != nullptr) 
-        {
-            if (parent->getLeft() == node) 
-            {
-                parent->setLeft(nullptr);
-            } 
-            else if (parent->getRight() == node) 
-            {
-                parent->setRight(nullptr);
+
+        // relink child parent pointer
+        if (child != nullptr) {
+            child->setParent(parent);
+        }
+
+        // relink parent pointer to child
+        if (parent != nullptr) {
+            if (parent->getLeft() == node) {
+                parent->setLeft(child);
+            } else if (parent->getRight() == node) {
+                parent->setRight(child);
             }
+        } else {
+            root_ = child; // when we delete the root
         }
 
         delete node;
