@@ -642,7 +642,7 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
     Node<Key, Value>* parent = node->getParent();
 
-    if(node == nullptr)
+    if(node == root_)
     {
         root_ = child;
     }
