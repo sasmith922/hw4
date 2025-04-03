@@ -144,7 +144,7 @@ protected:
     virtual void nodeSwap( AVLNode<Key,Value>* n1, AVLNode<Key,Value>* n2);
 
     // Add helper functions here
-    void insertFix(AVLNode<Key, Value>* node, int8_t diff); // TODO, balances tree after insertion
+    void insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Value>* node); // TODO, balances tree after insertion
     void removeFix(AVLNode<Key, Value>* node, int8_t diff); // TODO, balances tree after removal
     void rotateLeft(AVLNode<Key, Value>* node); // TODO
     void rotateRight(AVLNode<Key, Value>* node); // TODO
@@ -251,7 +251,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     AVLNode<Key, Value>* parent = nullptr;
 
     //traverse to node
-    node = BinarySearchTree<Key, Value>::internalFind(key);
+    node = static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::internalFind(key));
 
     // check if node has 2 children
     if (node->getLeft() && node->getRight()) 
@@ -306,7 +306,7 @@ void AVLTree<Key, Value>::nodeSwap( AVLNode<Key,Value>* n1, AVLNode<Key,Value>* 
 
 
 template<class Key, class Value>
-void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* node, int8_t diff)
+void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Value>* node)
 {
 
     if(node == nullptr)
@@ -314,7 +314,6 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* node, int8_t diff)
         return;
     }
 
-    AVLNode<Key, Value>* parent = node->getParent();
     AVLNode<Key, Value>* grandp = parent->getParent();
 
     if(parent == nullptr || grandp == nullptr) // base case
