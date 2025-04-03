@@ -260,7 +260,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         return; // we can skip balancing process
     }
 
-    parent = node->Node<Key, Value>::getParent();
+    parent = static_cast<AVLNode<Key, Value>*>(node->Node<Key, Value>::getParent());
 
     if(parent != nullptr)
     {
