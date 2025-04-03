@@ -602,55 +602,61 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
     //std::cout << "remove called!" << std::endl;
 
-    if (root_ == nullptr) {
-        //std::cout << "Tree is empty" << std::endl;
-        return;
-    }
-
-    Node<Key, Value>* node = root_;
-    Node<Key, Value>* parent = nullptr;
-
     //std::cout << "nodes init" << std::endl;
 
-    // Search for the node to remove
-    while (node != nullptr && node->getKey() != key) {
-        parent = node;
-        if (key < node->getKey()) {
-            node = node->getLeft();
-        } else {
-            node = node->getRight();
-        }
-    }
-    //std::cout << "while finishes!" << std::endl;
+    Node<Key, Value>* node = internalFind(key); // traverse node to be removed
 
-    if (node == nullptr) return; // Key not found
+    if (node == nullptr)
+    {
+        return; // no key is found
+    }
 
     // Case 1: Node has two children
     if (node->getLeft() && node->getRight()) {
         //std::cout << "two children!" << std::endl;
         Node<Key, Value>* pred = predecessor(node);
+        if (pred == nullptr)
+        {
+            return;
+        }
         nodeSwap(node, pred);
-        parent = node->getParent();  // Ensure parent is updated post swap
-        node = pred;                 // Work with the swapped node directly
+        node = pred; // node to act on is predecessor
     }
 
     // Case 2 & 3: Node has at most one child
     //std::cout << "one child or leaf!" << std::endl;
-    Node<Key, Value>* child = node->getLeft() ? node->getLeft() : node->getRight();
-    if (child) child->setParent(node->getParent());
+    Node<Key, Value>* child = nullptr;
+    if(node->getLeft()) 
+    {
+        child = node->getLeft();
+    } 
+    else if(node->getRight()) 
+    {
+        child = node->getRight();
+    }
 
-    // Fix the parent's pointer BEFORE deleting the node
-    if (node == root_) {
+    if (child != nullptr) {
+        child->setParent(node->getParent());
+    }
+
+
+    Node<Key, Value>* parent = node->getParent();
+
+    if(node == nullptr)
+    {
         root_ = child;
-    } else if (parent && parent->getLeft() == node) {
+    }
+    else if(parent != nullptr && parent->getLeft() == node)
+    {
         parent->setLeft(child);
-    } else if (parent) {
+    }
+    else if(parent != nullptr && parent->getRight() == node)
+    {
         parent->setRight(child);
     }
 
     //std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
     delete node;
-    node = nullptr;
     //std::cout << "node deleted!" << std::endl;
 
 }
@@ -756,17 +762,8 @@ void BinarySearchTree<Key, Value>::clear()
         return;
     }
 
-    /*
-        add description of why we have clear like this
 
-
-
-
-
-    */
-
-
-    if (root_->getParent() == nullptr) // we actually want to fully clear 
+    if (root_->getParent() == nullptr) // we actually want to fully clear (see description above helper)
     {
         clearNodes(root_); // helper function performs post-order deletion
     }
@@ -776,6 +773,13 @@ void BinarySearchTree<Key, Value>::clear()
     // done?
 
 }
+
+/*
+    we want to have a helper for clear to perform the actual post-order deletions
+    we also want to use temporary binary trees elsewhere in code because its easy/intuitive
+    use the helper which only triggers post-order deletion when we are at the main root node of the bst
+    now we can use temporary trees in implementation w/o worrying about dangling pointers
+*/
 
 template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::clearNodes(Node<Key, Value>* node) // helper for clear
