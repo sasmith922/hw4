@@ -430,45 +430,6 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     // Start balancing up from parent
     removeFix(parent, diff);
-    }
-
-    // Case 2 & 3: Node has at most one child
-    //std::cout << "one child or leaf!" << std::endl;
-    AVLNode<Key, Value>* child = nullptr;
-    if(node->getLeft()) 
-    {
-        child = node->getLeft();
-    } 
-    else if(node->getRight()) 
-    {
-        child = node->getRight();
-    }
-
-    if (child != nullptr) 
-    {
-        child->setParent(node->getParent());
-    }
-
-
-    if(node == this->root_)
-    {
-        this->root_ = child;
-    }
-    else if(parent != nullptr && parent->getLeft() == node)
-    {
-        parent->setLeft(child);
-    }
-    else if(parent != nullptr && parent->getRight() == node)
-    {
-        parent->setRight(child);
-    }
-
-    //std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
-    // patch tree
-    removeFix(parent, diff);
-    delete node;
-    
-
     //done?
 
 }
