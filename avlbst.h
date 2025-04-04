@@ -159,6 +159,10 @@ void AVLTree<Key, Value>::rotateLeft(AVLNode<Key, Value>* node) // mirror of rot
     AVLNode<Key, Value>* parent = node->getParent();
     AVLNode<Key, Value>* y = node;
     AVLNode<Key, Value>* x = node->getRight();
+    if(x == nullptr)
+    {
+        return;
+    }
     AVLNode<Key, Value>* b = x->getLeft();
 
     x->setLeft(y);
@@ -197,6 +201,10 @@ void AVLTree<Key, Value>::rotateRight(AVLNode<Key, Value>* node)
     AVLNode<Key, Value>* parent = node->getParent();
     AVLNode<Key, Value>* y = node;
     AVLNode<Key, Value>* x = node->getLeft();
+    if(x == nullptr)
+    {
+        return;
+    }
     AVLNode<Key, Value>* b = x->getRight();
 
     x->setRight(y);
