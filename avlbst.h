@@ -439,12 +439,11 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         child = node->getRight();
     }
 
-    if (child != nullptr) {
+    if (child != nullptr) 
+    {
         child->setParent(node->getParent());
     }
 
-
-    AVLNode<Key, Value>* parent = node->getParent();
 
     if(node == this->root_)
     {
