@@ -422,7 +422,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
         }
         if(grandp->getBalance() == -1)
         {
-            //insertFix(grandp, parent); // this is not correct but is how its written in slides
+            insertFix(grandp, parent); // recursive call
         }
         if(grandp->getBalance() == -2)
         {
@@ -470,7 +470,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
         }
         if(grandp->getBalance() == 1)
         {
-            //insertFix(grandp, parent); // this is not correct but is how its written in slides
+            insertFix(grandp, parent); // recursive call
         }
         if(grandp->getBalance() == 2)
         {
