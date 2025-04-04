@@ -385,107 +385,51 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 {
     // TODO
 
-    // traverse to node (and swap if necessary)
-    // should be same as BST remove
-    if(this->root_ == nullptr) // tree is empty
+    //std::cout << "called remove" << key << std::endl;
+
+    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
+
+    if (node == nullptr) return;
+
+    // Case: two children, swap with predecessor
+    if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
-        return;
+        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
+        nodeSwap(pred, node);
     }
 
-    //traverse to node
-    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::internalFind(key));
-    if(node == nullptr) // node not found
+    // Now node has at most one child
+    AVLNode<Key, Value>* child = node->getLeft() != nullptr ? node->getLeft() : node->getRight();
+    AVLNode<Key, Value>* parent = node->getParent();
+
+    int diff = 0;
+    if (parent != nullptr)
     {
-        return;
-    }
-    AVLNode<Key, Value>* parent = nullptr;
-
-    
-
-    
-
-    // check if node has 2 children
-    // if (node->getLeft() && node->getRight()) 
-    // {
-    //     AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
-    //     BinarySearchTree<Key, Value>::nodeSwap(node, pred);
-    //     std::cout << "nodeswap for pred" << std::endl;
-    //     parent = node->getParent(); 
-    //     node = pred;
-    // }
-
-    // check balance
-    // if(BinarySearchTree<Key, Value>::isBalanced()) // checks if tree is balanced
-    // {
-    //     return; // we can skip balancing process
-    // }
-
-   
-    parent = static_cast<AVLNode<Key, Value>*>(node->Node<Key, Value>::getParent());
-    int8_t diff = 0;
-    if(parent != nullptr)
-    {
-        if(parent->getLeft() == node) // node is a left child
+        if (parent->getLeft() == node)
         {
+            parent->setLeft(child);
             diff = 1;
         }
-        if(parent->getRight() == node) // node is a right child
+        else
         {
+            parent->setRight(child);
             diff = -1;
         }
     }
-
-
-    // remove node
-    // already found node
-    if (node == nullptr)
+    else // node is root
     {
-        return; // no key is found
+        this->root_ = child;
     }
 
-    // Case 1: Node has two children
-    if (node->getLeft() && node->getRight()) 
+    if (child != nullptr)
     {
-        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
-        if (pred == nullptr)
-        {
-            return;
-        }
+        child->setParent(parent);
+    }
 
-        nodeSwap(node, pred);
-        node = pred;
+    delete node;
 
-        // relinking pointers after nodeswap
-        AVLNode<Key, Value>* child = node->getLeft(); // pred never has a right child
-        AVLNode<Key, Value>* parent = node->getParent();
-
-        // relink child parent pointer
-        if(child != nullptr) 
-        {
-            child->setParent(parent);
-        }
-
-        // relink parent pointer to child
-        if (parent != nullptr)
-        {
-            if (parent->getLeft() == node)
-            {
-                parent->setLeft(child);
-            } 
-            else if (parent->getRight() == node)
-            {
-                parent->setRight(child);
-            }
-        } 
-        else
-        {
-            this->root_ = child; // when we delete the root
-        }
-
-        // patch tree
-        removeFix(parent, diff);
-        delete node;
-        return;
+    // Start balancing up from parent
+    removeFix(parent, diff);
     }
 
     // Case 2 & 3: Node has at most one child
@@ -654,7 +598,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
 
     // }
     if(parent == nullptr) return;
-    std::cout << "insertfix called" << std::endl;
+    //std::cout << "insertfix called" << std::endl;
 
     AVLNode<Key, Value>* grandparent = parent->getParent();
     if(grandparent == nullptr)
