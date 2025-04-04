@@ -780,7 +780,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
-                rotateRight(node);
+                rotateLeft(node);
                 node->setBalance(1);
                 child->setBalance(-1);
             }
