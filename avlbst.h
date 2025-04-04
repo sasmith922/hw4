@@ -384,7 +384,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     // Case 1: Node has two children
     if (node->getLeft() && node->getRight()) 
     {
-        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(predecessor(node));
+        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
         if (pred == nullptr)
         {
             return;
