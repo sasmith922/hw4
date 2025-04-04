@@ -688,6 +688,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
         }
         else if(grandparent->getBalance() == -2)
         {
+            std::cout << "rebalance" << std::endl;
             // Rebalance
             if(parent->getLeft() == child)
             {
@@ -738,6 +739,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
         }
         else if(grandparent->getBalance() == 2)
         {
+            std::cout << "rebalance" << std::endl;
             // Rebalance
             if(parent->getRight() == child)
             {
