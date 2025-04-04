@@ -243,7 +243,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 
     //insert
 
-    BinarySearchTree<Key, Value>::insert(new_item); // insert same as bst
+    // BinarySearchTree<Key, Value>::insert(new_item); // insert same as bst
 
     if (this->root_ == nullptr) 
     {
@@ -375,8 +375,53 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     }
 
     // remove node
-    BinarySearchTree<Key, Value>::remove(key);
+    // already found node
+    if (node == nullptr)
+    {
+        return; // no key is found
+    }
 
+    // Case 1: Node has two children
+    if (node->getLeft() && node->getRight()) 
+    {
+        AVLNode<Key, Value>* pred = predecessor(node);
+        if (pred == nullptr)
+        {
+            return;
+        }
+
+        nodeSwap(node, pred);
+
+        // relinking pointers after nodeswap
+        AVLNode<Key, Value>* child = node->getLeft(); // pred never has a right child
+        AVLNode<Key, Value>* parent = node->getParent();
+
+        // relink child parent pointer
+        if(child != nullptr) 
+        {
+            child->setParent(parent);
+        }
+
+        // relink parent pointer to child
+        if (parent != nullptr)
+        {
+            if (parent->getLeft() == node)
+            {
+                parent->setLeft(child);
+            } 
+            else if (parent->getRight() == node)
+            {
+                parent->setRight(child);
+            }
+        } 
+        else
+        {
+            this->root_ = child; // when we delete the root
+        }
+
+        delete node;
+        return;
+    }
     // patch tree
     removeFix(parent, diff);
 

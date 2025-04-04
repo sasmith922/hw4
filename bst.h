@@ -627,18 +627,25 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         Node<Key, Value>* parent = node->getParent();
 
         // relink child parent pointer
-        if (child != nullptr) {
+        if(child != nullptr) 
+        {
             child->setParent(parent);
         }
 
         // relink parent pointer to child
-        if (parent != nullptr) {
-            if (parent->getLeft() == node) {
+        if (parent != nullptr)
+        {
+            if (parent->getLeft() == node)
+            {
                 parent->setLeft(child);
-            } else if (parent->getRight() == node) {
+            } 
+            else if (parent->getRight() == node)
+            {
                 parent->setRight(child);
             }
-        } else {
+        } 
+        else
+        {
             root_ = child; // when we delete the root
         }
 
