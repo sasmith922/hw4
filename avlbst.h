@@ -388,18 +388,21 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     //std::cout << "called remove" << key << std::endl;
 
     AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
-    if (node == nullptr) return;
+    if (node == nullptr)
+    {
+        return;
+    }
 
-    // Case: node has two children, swap with predecessor
+    // Case 1: Node has two children
     if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
         nodeSwap(pred, node);
 
-        AVLNode<Key, Value>* child = pred->getLeft(); // predecessor never has right child
+        AVLNode<Key, Value>* child = pred->getLeft();  // pred never has a right child
         AVLNode<Key, Value>* parent = pred->getParent();
-
         int diff = 0;
+
         if (parent != nullptr)
         {
             if (parent->getLeft() == pred)
@@ -413,9 +416,9 @@ void AVLTree<Key, Value>:: remove(const Key& key)
                 diff = -1;
             }
         }
-        else // removing the root
+        else
         {
-            root_ = child;
+            this->root_ = child;
         }
 
         if (child != nullptr)
@@ -433,10 +436,49 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         return;
     }
 
-   
+    // Case 2 & 3: Node has at most one child
+    AVLNode<Key, Value>* child = nullptr;
+    if (node->getLeft() != nullptr)
+    {
+        child = static_cast<AVLNode<Key, Value>*>(node->getLeft());
+    }
+    else if (node->getRight() != nullptr)
+    {
+        child = static_cast<AVLNode<Key, Value>*>(node->getRight());
+    }
+
+    AVLNode<Key, Value>* parent = node->getParent();
+    int diff = 0;
+
+    if (parent != nullptr)
+    {
+        if (parent->getLeft() == node)
+        {
+            parent->setLeft(child);
+            diff = 1;
+        }
+        else if (parent->getRight() == node)
+        {
+            parent->setRight(child);
+            diff = -1;
+        }
+    }
+    else
+    {
+        this->root_ = child;
+    }
+
+    if (child != nullptr)
+    {
+        child->setParent(parent);
+    }
 
     delete node;
-    removeFix(parent, diff);
+
+    if (parent != nullptr)
+    {
+        removeFix(parent, diff);
+    }
     //done?
 
 }
