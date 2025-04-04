@@ -395,38 +395,39 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
         nodeSwap(pred, node);
-    }
+         // Now node has at most one child
+        AVLNode<Key, Value>* parent = pred->getParent();
+        AVLNode<Key, Value>* child = pred->getLeft();
 
-    // Now node has at most one child
-    AVLNode<Key, Value>* parent = pred->getParent();
-    AVLNode<Key, Value>* child = pred->getLeft();
-
-    int diff = 0;
-    if (parent == nullptr)
-    {
-        this->root_ = child;
-        if (child != nullptr)
+        int diff = 0;
+        if (parent == nullptr)
         {
-            child->setParent(nullptr);
-        }
-    }
-    else
-    {
-        if (parent->getLeft() == node)
-        {
-            parent->setLeft(child);
-            diff = 1;
+            this->root_ = child;
+            if (child != nullptr)
+            {
+                child->setParent(nullptr);
+            }
         }
         else
         {
-            parent->setRight(child);
-            diff = -1;
-        }
-        if (child != nullptr)
-        {
-            child->setParent(parent);
+            if (parent->getLeft() == node)
+            {
+                parent->setLeft(child);
+                diff = 1;
+            }
+            else
+            {
+                parent->setRight(child);
+                diff = -1;
+            }
+            if (child != nullptr)
+            {
+                child->setParent(parent);
+            }
         }
     }
+
+   
 
     delete node;
     removeFix(parent, diff);
