@@ -1,5 +1,6 @@
 #ifndef RECCHECK
 //if you want to add any #includes like <iostream> you must do them here (before the next endif)
+# include <algorithm>
 
 #endif
 
@@ -45,7 +46,7 @@ int getLength(Node* root)
     int leftDepth = getLength(root->left);
     int rightDepth = getLength(root->right);
 
-    return 1 + std::max(leftDepth, rightDepth);
+    return 1 + max(leftDepth, rightDepth);
 
 }
 
