@@ -703,9 +703,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             ndiff = -1;
         }
     }
+    // DO NOT OPERATE ON/WITH PARENT, SHOULD ONLY BE FOR RECURSIVE CALL
     
-    //AVLNode<Key, Value>* child = node; // fix, need to find out which child we are operating on, will we have to write more mirror cases??
-    AVLNode<Key, Value>* grandch = parent->getParent();
 
     // balance cases
     if(diff == -1) // operating on left child
@@ -713,7 +712,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         AVLNode<Key, Value>* child = node->getLeft();
         if(node->getBalance() + diff == -2) // heavy on left
         {
-            
+            AVLNode<Key, Value>* grandch = child->getLeft(); // declare grandchild node here
             if(child->getBalance() == -1) // zig-zig case
             {
                 rotateRight(node);
@@ -771,7 +770,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         AVLNode<Key, Value>* child = node->getRight();
         if(node->getBalance() + diff == 2) // heavy on right
         {
-            
+            AVLNode<Key, Value>* grandch = child->getRight(); // declare grandchild node here
             if(child->getBalance() == 1) // zig-zig case
             {
                 rotateLeft(node);
