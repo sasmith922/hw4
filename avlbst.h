@@ -661,120 +661,112 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
         return;
     }
 
-    AVLNode<Key, Value>* child = node;
-    if(grandparent->getLeft() == parent)
-    {
-        child = parent->getLeft();
-    }
-    else
-    {
-        child = parent->getRight();
-    }
 
     if(grandparent == nullptr) return;
 
     // Determine if parent is left or right child of grandparent
-    if(grandparent->getLeft() == parent)
+    if (grandparent->getLeft() == parent)
     {
         grandparent->updateBalance(-1);
 
-        if(grandparent->getBalance() == 0)
+        if (grandparent->getBalance() == 0)
         {
+            std::cout << "insertFix stopped (balanced)\n";
             return;
         }
-        else if(grandparent->getBalance() == -1)
+        else if (grandparent->getBalance() == -1)
         {
+            std::cout << "insertFix recursing up (still unbalanced)\n";
             insertFix(grandparent, parent);
         }
-        else if(grandparent->getBalance() == -2)
+        else if (grandparent->getBalance() == -2)
         {
-            std::cout << "rebalance" << std::endl;
-            // Rebalance
-            if(parent->getLeft() == child)
+            std::cout << "rebalance\n";
+            // Zig-Zig Left (left-left)
+            if (parent->getLeft() == node)
             {
-                // Zig-Zig Left
-                std::cout << "zig zig left" << std::endl;
+                std::cout << "zig zig left\n";
                 rotateRight(grandparent);
                 parent->setBalance(0);
                 grandparent->setBalance(0);
             }
-            else
+            // Zig-Zag Left-Right
+            else if (parent->getRight() == node)
             {
-                // Zig-Zag Left
-                std::cout << "In zigzag case" << std::endl;
+                std::cout << "zig zag left-right\n";
                 rotateLeft(parent);
                 rotateRight(grandparent);
 
-                // Fix balances
-                int b = child->getBalance();
-                if(b == -1)
-                {
-                    parent->setBalance(0);
-                    grandparent->setBalance(1);
-                }
-                else if(b == 0)
-                {
-                    parent->setBalance(0);
-                    grandparent->setBalance(0);
-                }
-                else if(b == 1)
-                {
-                    parent->setBalance(-1);
-                    grandparent->setBalance(0);
-                }
-                child->setBalance(0);
-            }
-        }
-    }
-    else // parent is right child
-    {
-        grandparent->updateBalance(1);
-
-        if(grandparent->getBalance() == 0)
-        {
-            return;
-        }
-        else if(grandparent->getBalance() == 1)
-        {
-            insertFix(grandparent, parent);
-        }
-        else if(grandparent->getBalance() == 2)
-        {
-            std::cout << "rebalance" << std::endl;
-            // Rebalance
-            if(parent->getRight() == child)
-            {
-                std::cout << "siz zig right" << std::endl;
-                // Zig-Zig Right
-                rotateLeft(grandparent);
-                parent->setBalance(0);
-                grandparent->setBalance(0);
-            }
-            else
-            {
-                // Zig-Zag Right
-                std::cout << "in zig-zag case" << std::endl;
-                rotateRight(parent);
-                rotateLeft(grandparent);
-
-                // Fix balances
-                int b = child->getBalance();
-                if(b == 1)
+                int b = node->getBalance();
+                if (b == 1)
                 {
                     parent->setBalance(0);
                     grandparent->setBalance(-1);
                 }
-                else if(b == 0)
-                {
-                    parent->setBalance(0);
-                    grandparent->setBalance(0);
-                }
-                else if(b == -1)
+                else if (b == -1)
                 {
                     parent->setBalance(1);
                     grandparent->setBalance(0);
                 }
-                child->setBalance(0);
+                else // b == 0
+                {
+                    parent->setBalance(0);
+                    grandparent->setBalance(0);
+                }
+                node->setBalance(0);
+            }
+        }
+    }
+    // Case 2: parent is the right child of grandparent
+    else
+    {
+        grandparent->updateBalance(1);
+
+        if (grandparent->getBalance() == 0)
+        {
+            std::cout << "insertFix stopped (balanced)\n";
+            return;
+        }
+        else if (grandparent->getBalance() == 1)
+        {
+            std::cout << "insertFix recursing up (still unbalanced)\n";
+            insertFix(grandparent, parent);
+        }
+        else if (grandparent->getBalance() == 2)
+        {
+            std::cout << "rebalance\n";
+            // Zig-Zig Right (right-right)
+            if (parent->getRight() == node)
+            {
+                std::cout << "zig zig right\n";
+                rotateLeft(grandparent);
+                parent->setBalance(0);
+                grandparent->setBalance(0);
+            }
+            // Zig-Zag Right-Left
+            else if (parent->getLeft() == node)
+            {
+                std::cout << "zig zag right-left\n";
+                rotateRight(parent);
+                rotateLeft(grandparent);
+
+                int b = node->getBalance();
+                if (b == 1)
+                {
+                    parent->setBalance(0);
+                    grandparent->setBalance(-1);
+                }
+                else if (b == -1)
+                {
+                    parent->setBalance(1);
+                    grandparent->setBalance(0);
+                }
+                else // b == 0
+                {
+                    parent->setBalance(0);
+                    grandparent->setBalance(0);
+                }
+                node->setBalance(0);
             }
         }
     }
