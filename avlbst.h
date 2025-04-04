@@ -827,8 +827,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             {
                 int8_t grandchBalance = grandch->getBalance();
                 grandch = child->getRight();
-                rotateLeft(child);
-                rotateRight(node);
+                rotateLeft(parent);
+                rotateRight(grandch);
                 if(grandchBalance == 1)
                 {
                     node->setBalance(0);
@@ -885,8 +885,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             {
                 int8_t grandchBalance = grandch->getBalance();
                 grandch = child->getLeft();
-                rotateRight(child);
-                rotateLeft(node);
+                rotateRight(parent);
+                rotateLeft(grandch);
                 if(grandchBalance == -1)
                 {
                     node->setBalance(0);
