@@ -51,13 +51,16 @@ int main(int argc, char *argv[])
     cout << "\nZig-Zag Left-Right Rotation Test (c, a, b):" << endl;
     AVLTree<char, int> zigzagTree;
     zigzagTree.insert(std::make_pair('c', 1));
+    cout << "Inserted c" << endl;
     zigzagTree.insert(std::make_pair('a', 2));
+    cout << "inserted a" << endl;
     zigzagTree.insert(std::make_pair('b', 3)); // This should trigger left-right rotation
+    cout << "inserted b, should trigger left-right rotation" << endl;
 
     for(AVLTree<char, int>::iterator it = zigzagTree.begin(); it != zigzagTree.end(); ++it) 
     {
         cout << it->first << " => " << it->second << endl;
     }
 
-        return 0;
+    return 0;
 }
