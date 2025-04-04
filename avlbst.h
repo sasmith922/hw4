@@ -254,7 +254,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
     AVLNode<Key, Value>* current = static_cast<AVLNode<Key, Value>*>(this->root_);
     AVLNode<Key, Value>* parent = nullptr;
 
-    while(current != nullptr) 
+    while(current != nullptr) // walking to node
     {
         parent = current;
         if(new_item.first < current->getKey()) 
@@ -295,11 +295,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
     
     // update balances
     newNode->setBalance(0);
-    if(parent->getBalance() == -1 || parent->getBalance() == 1)
-    {
-        parent->setBalance(0);
-    }
-    else if(parent->getBalance() == 0)
+    if(parent->getBalance() == 0)
     {
         if(parent->getLeft() == newNode) // node is left of parent
         {
@@ -310,6 +306,10 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
             parent->setBalance(1);
         }
         insertFix(parent, newNode); // call insertFix!!!
+    }
+    else if(parent->getBalance() == -1 || parent->getBalance() == 1)
+    {
+        parent->setBalance(0);
     }
 
 
