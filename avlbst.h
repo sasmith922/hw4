@@ -388,10 +388,9 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     //std::cout << "called remove" << key << std::endl;
 
     AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
-
     if (node == nullptr) return;
 
-    // Case: two children, swap with predecessor
+    // Case: node has two children, swap with predecessor
     if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
@@ -399,11 +398,19 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     }
 
     // Now node has at most one child
-    AVLNode<Key, Value>* child = node->getLeft() != nullptr ? node->getLeft() : node->getRight();
     AVLNode<Key, Value>* parent = node->getParent();
+    AVLNode<Key, Value>* child = node->getLeft() != nullptr ? node->getLeft() : node->getRight();
 
     int diff = 0;
-    if (parent != nullptr)
+    if (parent == nullptr)
+    {
+        this->root_ = child;
+        if (child != nullptr)
+        {
+            child->setParent(nullptr);
+        }
+    }
+    else
     {
         if (parent->getLeft() == node)
         {
@@ -415,20 +422,13 @@ void AVLTree<Key, Value>:: remove(const Key& key)
             parent->setRight(child);
             diff = -1;
         }
-    }
-    else // node is root
-    {
-        this->root_ = child;
-    }
-
-    if (child != nullptr)
-    {
-        child->setParent(parent);
+        if (child != nullptr)
+        {
+            child->setParent(parent);
+        }
     }
 
     delete node;
-
-    // Start balancing up from parent
     removeFix(parent, diff);
     //done?
 
