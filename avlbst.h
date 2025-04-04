@@ -693,6 +693,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
             if(parent->getLeft() == child)
             {
                 // Zig-Zig Left
+                std::cout << "zig zig left" << std::endl;
                 rotateRight(grandparent);
                 parent->setBalance(0);
                 grandparent->setBalance(0);
@@ -743,6 +744,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
             // Rebalance
             if(parent->getRight() == child)
             {
+                std::cout << "siz zig right" << std::endl;
                 // Zig-Zig Right
                 rotateLeft(grandparent);
                 parent->setBalance(0);
