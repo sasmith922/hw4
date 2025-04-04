@@ -214,7 +214,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
         return;
     }
 
-    AVLNode<Key, Value>* current = root_;
+    AVLNode<Key, Value>* current = this->root_;
     AVLNode<Key, Value>* parent = nullptr;
 
     while(current != nullptr) 
@@ -235,7 +235,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
         }
     }
 
-    AVLNode<Key, Value>* newNode = new Node<Key, Value>(new_item.first, new_item.second, parent);
+    AVLNode<Key, Value>* newNode = new AVLNode<Key, Value>(new_item.first, new_item.second, parent);
     if(new_item.first < parent->getKey()) 
     {
         parent->setLeft(newNode);
@@ -250,28 +250,29 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
     // AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(new_item.first)); // node we inserted
     // AVLNode<Key, Value>* parent = node->getParent();
 
+
     if(parent == nullptr) // no parent, no need for balancing
     {
         return;
     }
     
     // update balances
-    node->setBalance(0);
+    newNode->setBalance(0);
     if(parent->getBalance() == -1 || parent->getBalance() == 1)
     {
         parent->setBalance(0);
     }
     else if(parent->getBalance() == 0)
     {
-        if(parent->getLeft() == node) // node is left of parent
+        if(parent->getLeft() == newNode) // node is left of parent
         {
             parent->setBalance(-1);
         }
-        if(parent->getRight() == node) // node is right of parent
+        if(parent->getRight() == newNode) // node is right of parent
         {
             parent->setBalance(1);
         }
-        insertFix(parent, node); // call insertFix!!!
+        insertFix(parent, newNode); // call insertFix!!!
     }
 
 
