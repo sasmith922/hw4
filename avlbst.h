@@ -367,12 +367,10 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         if(parent->getLeft() == node) // node is a left child
         {
             diff = 1;
-            parent->updateBalance(diff);
         }
         if(parent->getRight() == node) // node is a right child
         {
             diff = -1;
-            parent->updateBalance(diff);
         }
     }
 
@@ -538,15 +536,13 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         }
     }
     
-    AVLNode<Key, Value>* child = node; // fix, need to find out which child we are operating on, will we have to write more mirror cases??
+    //AVLNode<Key, Value>* child = node; // fix, need to find out which child we are operating on, will we have to write more mirror cases??
     AVLNode<Key, Value>* grandch = parent->getParent();
-
-
 
     // balance cases
     if(diff == -1) // operating on left child
     {
-
+        AVLNode<Key, Value>* child = node->getLeft();
         if(node->getBalance() + diff == -2) // heavy on left
         {
             
@@ -604,7 +600,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     }
     if(diff == 1) // mirrored, operating on right child
     {
-
+        AVLNode<Key, Value>* child = node->getRight();
         if(node->getBalance() + diff == 2) // heavy on right
         {
             
