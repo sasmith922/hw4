@@ -296,12 +296,13 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     }
 
     AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->root_);
-    AVLNode<Key, Value>* parent = nullptr;
-
     if(node == nullptr) // node not found
     {
         return;
     }
+    AVLNode<Key, Value>* parent = nullptr;
+
+    
 
     //traverse to node
     node = static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::internalFind(key));
