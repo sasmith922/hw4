@@ -398,8 +398,8 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     }
 
     // Now node has at most one child
-    AVLNode<Key, Value>* parent = node->getParent();
-    AVLNode<Key, Value>* child = node->getLeft() != nullptr ? node->getLeft() : node->getRight();
+    AVLNode<Key, Value>* parent = pred->getParent();
+    AVLNode<Key, Value>* child = pred->getLeft();
 
     int diff = 0;
     if (parent == nullptr)
