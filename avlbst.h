@@ -653,7 +653,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
 
     // }
     if(parent == nullptr) return;
-
+    std::cout << "insertfix called" << std::endl;
 
     AVLNode<Key, Value>* grandparent = parent->getParent();
     if(grandparent == nullptr)
@@ -699,6 +699,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
             else
             {
                 // Zig-Zag Left
+                std::cout << "In zigzag case" << std::endl;
                 rotateLeft(parent);
                 rotateRight(grandparent);
 
@@ -748,6 +749,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
             else
             {
                 // Zig-Zag Right
+                std::cout << "in zig-zag case" << std::endl;
                 rotateRight(parent);
                 rotateLeft(grandparent);
 
@@ -827,8 +829,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             {
                 int8_t grandchBalance = grandch->getBalance();
                 grandch = child->getRight();
-                rotateLeft(parent);
-                rotateRight(grandch);
+                rotateLeft(child);
+                rotateRight(node);
                 if(grandchBalance == 1)
                 {
                     node->setBalance(0);
@@ -885,8 +887,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             {
                 int8_t grandchBalance = grandch->getBalance();
                 grandch = child->getLeft();
-                rotateRight(parent);
-                rotateLeft(grandch);
+                rotateRight(child);
+                rotateLeft(node);
                 if(grandchBalance == -1)
                 {
                     node->setBalance(0);
