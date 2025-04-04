@@ -295,7 +295,8 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         return;
     }
 
-    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->root_);
+    //traverse to node
+    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::internalFind(key));
     if(node == nullptr) // node not found
     {
         return;
@@ -304,8 +305,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     
 
-    //traverse to node
-    node = static_cast<AVLNode<Key, Value>*>(BinarySearchTree<Key, Value>::internalFind(key));
+    
 
     // check if node has 2 children
     if (node->getLeft() && node->getRight()) 
