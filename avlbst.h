@@ -429,7 +429,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     // Case 2 & 3: Node has at most one child
     //std::cout << "one child or leaf!" << std::endl;
-    Node<Key, Value>* child = nullptr;
+    AVLNode<Key, Value>* child = nullptr;
     if(node->getLeft()) 
     {
         child = node->getLeft();
@@ -444,11 +444,11 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     }
 
 
-    Node<Key, Value>* parent = node->getParent();
+    AVLNode<Key, Value>* parent = node->getParent();
 
-    if(node == root_)
+    if(node == this->root_)
     {
-        root_ = child;
+        this->root_ = child;
     }
     else if(parent != nullptr && parent->getLeft() == node)
     {
