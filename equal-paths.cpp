@@ -22,29 +22,15 @@ bool equalPaths(Node * root)
         return true;
     }
 
-    // if((root->left == nullptr && root->right != nullptr) 
-    // || (root->left != nullptr && root->right == nullptr)) // root node has only 1 subtree
-    // {
-    //     return false; // paths cannot be equal
-    // } 
+    // Node* leftChild = root->left;
+    // Node* rightChild = root->right;
 
-    Node* leftChild = root->left;
-    Node* rightChild = root->right;
+    // bool subtreesEqual = getLength(leftChild) == getLength(rightChild);  
 
-    // if((leftChild->left == nullptr && leftChild->right == nullptr) 
-    // && (rightChild->left == nullptr && rightChild->right == nullptr)) // both children leaf nodes
-    // {
-    //     return true; // does this count as base case? is it also redundant?
-    // }
+    // return equalPaths(leftChild) && equalPaths(rightChild) && subtreesEqual;
 
-
-    /* 
-        check to see if subtrees have same length, 
-        as we recurse down, this will see if there is a difference
-    */
-    bool subtreesEqual = getLength(leftChild) == getLength(rightChild);  
-
-    return equalPaths(leftChild) && equalPaths(rightChild) && subtreesEqual;
+    int leafDepth = -1;
+    return equalPathsHelper(root, 0, leafDepth);
 
 }
 
@@ -55,34 +41,27 @@ int getLength(Node* root)
         return 0;
     }
 
-    if(root->left == nullptr && root->right == nullptr) // base case, root is leaf node
-    {
-        return 1;
-    }
 
     int leftDepth = getLength(root->left);
     int rightDepth = getLength(root->right);
 
-    if(leftDepth > 0 && rightDepth > 0) // left and right have subtrees
+    return 1 + std::max(leftDepth, rightDepth);
+
+}
+
+bool equalPathsHelper(Node* root, int depth, int& leafDepth)
+{
+    if (root == nullptr) return true;
+
+    // If it's a leaf
+    if (root->left == nullptr && root->right == nullptr)
     {
-        if(leftDepth > rightDepth) // gets smaller height between left and right (right case also accounts for equal)
-        {
-            return leftDepth + 1;
-        }
-        else
-        {
-            return rightDepth + 1;
-        }
+        if (leafDepth == -1) leafDepth = depth;
+        return depth == leafDepth;
     }
 
-    if(leftDepth > 0) // subtree only in left
-    {
-        return leftDepth + 1;
-    }
-    else // subtree only in right
-    {
-        return rightDepth + 1;
-    }
-
+    // Check subtrees
+    return equalPathsHelper(root->left, depth + 1, leafDepth) &&
+           equalPathsHelper(root->right, depth + 1, leafDepth);
 }
 
