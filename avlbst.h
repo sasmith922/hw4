@@ -405,19 +405,20 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     
 
     // check if node has 2 children
-    if (node->getLeft() && node->getRight()) 
-    {
-        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
-        BinarySearchTree<Key, Value>::nodeSwap(node, pred);
-        parent = node->getParent(); 
-        node = pred;
-    }
+    // if (node->getLeft() && node->getRight()) 
+    // {
+    //     AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
+    //     BinarySearchTree<Key, Value>::nodeSwap(node, pred);
+    //     std::cout << "nodeswap for pred" << std::endl;
+    //     parent = node->getParent(); 
+    //     node = pred;
+    // }
 
     // check balance
-    if(BinarySearchTree<Key, Value>::isBalanced()) // checks if tree is balanced
-    {
-        return; // we can skip balancing process
-    }
+    // if(BinarySearchTree<Key, Value>::isBalanced()) // checks if tree is balanced
+    // {
+    //     return; // we can skip balancing process
+    // }
 
    
     parent = static_cast<AVLNode<Key, Value>*>(node->Node<Key, Value>::getParent());
