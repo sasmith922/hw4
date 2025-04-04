@@ -235,84 +235,144 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 {
     // TODO
 
-    if(this->root_ == nullptr) // empty tree
+    // if(this->root_ == nullptr) // empty tree
+    // {
+    //     this->root_ = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
+    //     return;
+    // }
+
+    // //insert
+
+    // // BinarySearchTree<Key, Value>::insert(new_item); // insert same as bst
+
+    // if (this->root_ == nullptr) 
+    // {
+    //     this->root_ = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
+    //     return;
+    // }
+
+    // AVLNode<Key, Value>* current = static_cast<AVLNode<Key, Value>*>(this->root_);
+    // AVLNode<Key, Value>* parent = nullptr;
+
+    // while(current != nullptr) // walking to node
+    // {
+    //     parent = current;
+    //     if(new_item.first < current->getKey()) 
+    //     {
+    //         current = current->getLeft();
+    //     } 
+    //     else if(new_item.first > current->getKey()) 
+    //     {
+    //         current = current->getRight();
+    //     } 
+    //     else 
+    //     {
+    //         current->setValue(new_item.second);
+    //         return;
+    //     }
+    // }
+
+    // AVLNode<Key, Value>* newNode = new AVLNode<Key, Value>(new_item.first, new_item.second, parent);
+    // if(new_item.first < parent->getKey()) 
+    // {
+    //     parent->setLeft(newNode);
+    // } 
+    // else 
+    // {
+    //     parent->setRight(newNode);
+    // }
+
+
+    // // balancing
+    // // AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(new_item.first)); // node we inserted
+    // // AVLNode<Key, Value>* parent = node->getParent();
+
+
+    // if(parent == nullptr) // no parent, no need for balancing
+    // {
+    //     return;
+    // }
+    
+    // // update balances
+    // newNode->setBalance(0);
+    // if(parent->getBalance() == -1 || parent->getBalance() == 1)
+    // {
+    //     parent->setBalance(0);
+    // }
+    // else if(parent->getBalance() == 0)
+    // {
+    //     if(parent->getLeft() == newNode) // node is left of parent
+    //     {
+    //         parent->setBalance(-1);
+    //     }
+    //     if(parent->getRight() == newNode) // node is right of parent
+    //     {
+    //         parent->setBalance(1);
+    //     }
+    //     insertFix(parent, newNode); // call insertFix!!!
+    // }
+
+    // If tree is empty, create root
+    if(this->root_ == nullptr)
     {
         this->root_ = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
         return;
     }
 
-    //insert
-
-    // BinarySearchTree<Key, Value>::insert(new_item); // insert same as bst
-
-    if (this->root_ == nullptr) 
-    {
-        this->root_ = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
-        return;
-    }
-
+    // Start from root and walk to insertion point
     AVLNode<Key, Value>* current = static_cast<AVLNode<Key, Value>*>(this->root_);
     AVLNode<Key, Value>* parent = nullptr;
 
-    while(current != nullptr) // walking to node
+    while(current != nullptr)
     {
         parent = current;
-        if(new_item.first < current->getKey()) 
+        if(new_item.first < current->getKey())
         {
             current = current->getLeft();
-        } 
-        else if(new_item.first > current->getKey()) 
+        }
+        else if(new_item.first > current->getKey())
         {
             current = current->getRight();
-        } 
-        else 
+        }
+        else
         {
+            // Key already exists, update value
             current->setValue(new_item.second);
             return;
         }
     }
 
+    // Create and attach new node
     AVLNode<Key, Value>* newNode = new AVLNode<Key, Value>(new_item.first, new_item.second, parent);
-    if(new_item.first < parent->getKey()) 
+    if(new_item.first < parent->getKey())
     {
         parent->setLeft(newNode);
-    } 
-    else 
+    }
+    else
     {
         parent->setRight(newNode);
     }
 
-
-    // balancing
-    // AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(new_item.first)); // node we inserted
-    // AVLNode<Key, Value>* parent = node->getParent();
-
-
-    if(parent == nullptr) // no parent, no need for balancing
-    {
-        return;
-    }
-    
-    // update balances
     newNode->setBalance(0);
-    if(parent->getBalance() == 0)
+
+    // Rebalancing
+    if(parent->getBalance() == -1 || parent->getBalance() == 1)
     {
-        if(parent->getLeft() == newNode) // node is left of parent
+        parent->setBalance(0); // was imbalanced, now balanced
+    }
+    else if(parent->getBalance() == 0)
+    {
+        // update balance and start fixing
+        if(parent->getLeft() == newNode)
         {
             parent->setBalance(-1);
         }
-        if(parent->getRight() == newNode) // node is right of parent
+        else
         {
             parent->setBalance(1);
         }
-        insertFix(parent, newNode); // call insertFix!!!
+        insertFix(parent, newNode);
     }
-    else 
-    {
-        parent->setBalance(0);
-    }
-
-
 
 }
 
@@ -482,115 +542,220 @@ template<class Key, class Value>
 void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Value>* node)
 {
 
-    if(node == nullptr)
+    // if(node == nullptr)
+    // {
+    //     return;
+    // }
+
+    // AVLNode<Key, Value>* grandp = parent->getParent();
+
+    // if(parent == nullptr || grandp == nullptr) // base case
+    // {
+    //     return;
+    // }
+
+    // if(parent == grandp->getLeft()) // p is left child of g
+    // {
+
+    //     grandp->updateBalance(-1); // update balance, correct???
+    //     if(grandp->getBalance() == 0)
+    //     {
+    //         return;
+    //     }
+    //     if(grandp->getBalance() == -1)
+    //     {
+    //         insertFix(grandp, parent); // recursive call
+    //     }
+    //     if(grandp->getBalance() == -2)
+    //     {
+    //         if(node == parent->getLeft()) // zig-zig case
+    //         {
+    //             rotateRight(grandp);
+    //             parent->setBalance(0); // edit
+    //             grandp->setBalance(0);
+    //         }
+    //         if(node == parent->getRight()) // zig-zag case
+    //         {
+    //             rotateLeft(parent);
+    //             rotateRight(grandp);
+    //             if(node->getBalance() == -1)
+    //             {
+    //                 parent->setBalance(0);
+    //                 grandp->setBalance(1);
+    //                 node->setBalance(0);
+    //             }
+    //             if(node->getBalance() == 0)
+    //             {
+    //                 parent->setBalance(0);
+    //                 grandp->setBalance(0);
+    //                 node->setBalance(0);
+                    
+    //             }
+    //             if(node->getBalance() == 1)
+    //             {
+    //                 parent->setBalance(1);
+    //                 grandp->setBalance(0);
+    //                 node->setBalance(0);
+    //             }
+
+    //         }
+    //     }
+
+
+    // }
+    // if(parent == grandp->getRight()) // p is right child of g, mirror of above
+    // {
+    //     grandp->updateBalance(1); 
+    //     if(grandp->getBalance() == 0)
+    //     {
+    //         return;
+    //     }
+    //     if(grandp->getBalance() == 1)
+    //     {
+    //         insertFix(grandp, parent); // recursive call
+    //     }
+    //     if(grandp->getBalance() == 2)
+    //     {
+    //         if(node == parent->getRight()) // zig-zig case
+    //         {
+    //             rotateLeft(grandp);
+    //             parent->setBalance(0); 
+    //             grandp->setBalance(0);
+    //         }
+    //         if(node == parent->getLeft()) // zig-zag case
+    //         {
+    //             rotateRight(parent);
+    //             rotateLeft(grandp);
+    //             if(node->getBalance() == 1)
+    //             {
+    //                 parent->setBalance(0);
+    //                 grandp->setBalance(-1);
+    //                 node->setBalance(0);
+    //             }
+    //             if(node->getBalance() == 0)
+    //             {
+    //                 parent->setBalance(0);
+    //                 grandp->setBalance(0);
+    //                 node->setBalance(0);
+                    
+    //             }
+    //             if(node->getBalance() == -1)
+    //             {
+    //                 parent->setBalance(-1);
+    //                 grandp->setBalance(0);
+    //                 node->setBalance(0);
+    //             }
+
+    //         }
+    //     }
+
+    // // done?
+
+    // }
+    if(parent == nullptr) return;
+
+    AVLNode<Key, Value>* grandparent = parent->getParent();
+
+    if(grandparent == nullptr) return;
+
+    // Determine if parent is left or right child of grandparent
+    if(grandparent->getLeft() == parent)
     {
-        return;
-    }
+        grandparent->updateBalance(-1);
 
-    AVLNode<Key, Value>* grandp = parent->getParent();
-
-    if(parent == nullptr || grandp == nullptr) // base case
-    {
-        return;
-    }
-
-    if(parent == grandp->getLeft()) // p is left child of g
-    {
-
-        grandp->updateBalance(-1); // update balance, correct???
-        if(grandp->getBalance() == 0)
+        if(grandparent->getBalance() == 0)
         {
             return;
         }
-        if(grandp->getBalance() == -1)
+        else if(grandparent->getBalance() == -1)
         {
-            insertFix(grandp, parent); // recursive call
+            insertFix(grandparent, parent);
         }
-        if(grandp->getBalance() == -2)
+        else if(grandparent->getBalance() == -2)
         {
-            if(node == parent->getLeft()) // zig-zig case
+            // Rebalance
+            if(parent->getLeft() == child)
             {
-                rotateRight(grandp);
-                parent->setBalance(0); // edit
-                grandp->setBalance(0);
+                // Zig-Zig Left
+                rotateRight(grandparent);
+                parent->setBalance(0);
+                grandparent->setBalance(0);
             }
-            if(node == parent->getRight()) // zig-zag case
+            else
             {
+                // Zig-Zag Left
                 rotateLeft(parent);
-                rotateRight(grandp);
-                if(node->getBalance() == -1)
-                {
-                    parent->setBalance(0);
-                    grandp->setBalance(1);
-                    node->setBalance(0);
-                }
-                if(node->getBalance() == 0)
-                {
-                    parent->setBalance(0);
-                    grandp->setBalance(0);
-                    node->setBalance(0);
-                    
-                }
-                if(node->getBalance() == 1)
-                {
-                    parent->setBalance(1);
-                    grandp->setBalance(0);
-                    node->setBalance(0);
-                }
+                rotateRight(grandparent);
 
-            }
-        }
-
-
-    }
-    if(parent == grandp->getRight()) // p is right child of g, mirror of above
-    {
-        grandp->updateBalance(1); 
-        if(grandp->getBalance() == 0)
-        {
-            return;
-        }
-        if(grandp->getBalance() == 1)
-        {
-            insertFix(grandp, parent); // recursive call
-        }
-        if(grandp->getBalance() == 2)
-        {
-            if(node == parent->getRight()) // zig-zig case
-            {
-                rotateLeft(grandp);
-                parent->setBalance(0); 
-                grandp->setBalance(0);
-            }
-            if(node == parent->getLeft()) // zig-zag case
-            {
-                rotateRight(parent);
-                rotateLeft(grandp);
-                if(node->getBalance() == 1)
+                // Fix balances
+                int b = child->getBalance();
+                if(b == -1)
                 {
                     parent->setBalance(0);
-                    grandp->setBalance(-1);
-                    node->setBalance(0);
+                    grandparent->setBalance(1);
                 }
-                if(node->getBalance() == 0)
+                else if(b == 0)
                 {
                     parent->setBalance(0);
-                    grandp->setBalance(0);
-                    node->setBalance(0);
-                    
+                    grandparent->setBalance(0);
                 }
-                if(node->getBalance() == -1)
+                else if(b == 1)
                 {
                     parent->setBalance(-1);
-                    grandp->setBalance(0);
-                    node->setBalance(0);
+                    grandparent->setBalance(0);
                 }
-
+                child->setBalance(0);
             }
         }
+    }
+    else // parent is right child
+    {
+        grandparent->updateBalance(1);
 
-    // done?
+        if(grandparent->getBalance() == 0)
+        {
+            return;
+        }
+        else if(grandparent->getBalance() == 1)
+        {
+            insertFix(grandparent, parent);
+        }
+        else if(grandparent->getBalance() == 2)
+        {
+            // Rebalance
+            if(parent->getRight() == child)
+            {
+                // Zig-Zig Right
+                rotateLeft(grandparent);
+                parent->setBalance(0);
+                grandparent->setBalance(0);
+            }
+            else
+            {
+                // Zig-Zag Right
+                rotateRight(parent);
+                rotateLeft(grandparent);
 
+                // Fix balances
+                int b = child->getBalance();
+                if(b == 1)
+                {
+                    parent->setBalance(0);
+                    grandparent->setBalance(-1);
+                }
+                else if(b == 0)
+                {
+                    parent->setBalance(0);
+                    grandparent->setBalance(0);
+                }
+                else if(b == -1)
+                {
+                    parent->setBalance(1);
+                    grandparent->setBalance(0);
+                }
+                child->setBalance(0);
+            }
+        }
     }
 
 }
