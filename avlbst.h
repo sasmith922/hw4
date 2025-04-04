@@ -392,6 +392,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         }
 
         nodeSwap(node, pred);
+        node = pred;
 
         // relinking pointers after nodeswap
         AVLNode<Key, Value>* child = node->getLeft(); // pred never has a right child
