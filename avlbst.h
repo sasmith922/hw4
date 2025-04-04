@@ -388,55 +388,16 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     //std::cout << "called remove" << key << std::endl;
 
     AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
-    if (node == nullptr)
-    {
-        return;
-    }
+    if (node == nullptr) return;
 
-    // Case 1: Node has two children
+    // Case: two children → swap with predecessor, reduce to 0/1 child case
     if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
         nodeSwap(pred, node);
-
-        AVLNode<Key, Value>* child = pred->getLeft();  // pred never has a right child
-        AVLNode<Key, Value>* parent = pred->getParent();
-        int diff = 0;
-
-        if (parent != nullptr)
-        {
-            if (parent->getLeft() == pred)
-            {
-                parent->setLeft(child);
-                diff = 1;
-            }
-            else if (parent->getRight() == pred)
-            {
-                parent->setRight(child);
-                diff = -1;
-            }
-        }
-        else
-        {
-            this->root_ = child;
-        }
-
-        if (child != nullptr)
-        {
-            child->setParent(parent);
-        }
-
-        delete pred;
-
-        if (parent != nullptr)
-        {
-            removeFix(parent, diff);
-        }
-
-        return;
     }
 
-    // Case 2 & 3: Node has at most one child
+    // Now handle 0 or 1 child
     AVLNode<Key, Value>* child = nullptr;
     if (node->getLeft() != nullptr)
     {
@@ -447,7 +408,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         child = static_cast<AVLNode<Key, Value>*>(node->getRight());
     }
 
-    AVLNode<Key, Value>* parent = node->getParent();
+    AVLNode<Key, Value>* parent = static_cast<AVLNode<Key, Value>*>(node->getParent());
     int diff = 0;
 
     if (parent != nullptr)
@@ -457,7 +418,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
             parent->setLeft(child);
             diff = 1;
         }
-        else if (parent->getRight() == node)
+        else
         {
             parent->setRight(child);
             diff = -1;
