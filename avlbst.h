@@ -709,10 +709,10 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     // balance cases
     if(diff == -1) // operating on left child
     {
-        AVLNode<Key, Value>* child = node->getLeft();
+       
         if(node->getBalance() + diff == -2) // heavy on left
         {
-            AVLNode<Key, Value>* grandch = child->getLeft(); // declare grandchild node here
+            AVLNode<Key, Value>* child = node->getLeft();
             if(child->getBalance() == -1) // zig-zig case
             {
                 rotateRight(node);
@@ -728,6 +728,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             if(child->getBalance() == 1) // zig-zag case
             {
+                AVLNode<Key, Value>* grandch = child->getLeft(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
                 grandch = child->getRight();
                 rotateLeft(child);
@@ -767,10 +768,10 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     }
     if(diff == 1) // mirrored, operating on right child
     {
-        AVLNode<Key, Value>* child = node->getRight();
+
         if(node->getBalance() + diff == 2) // heavy on right
         {
-            AVLNode<Key, Value>* grandch = child->getRight(); // declare grandchild node here
+            AVLNode<Key, Value>* child = node->getRight();   
             if(child->getBalance() == 1) // zig-zig case
             {
                 rotateLeft(node);
@@ -786,6 +787,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             if(child->getBalance() == -1) // zig-zag case
             {
+                AVLNode<Key, Value>* grandch = child->getRight(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
                 grandch = child->getLeft();
                 rotateRight(child);
