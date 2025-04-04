@@ -374,6 +374,9 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         }
     }
 
+    // patch tree
+    removeFix(parent, diff);
+
     // remove node
     // already found node
     if (node == nullptr)
@@ -422,8 +425,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         delete node;
         return;
     }
-    // patch tree
-    removeFix(parent, diff);
+    
 
     //done?
 
