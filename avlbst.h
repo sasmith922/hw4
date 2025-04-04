@@ -204,9 +204,51 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
         return;
     }
 
+    //insert
+
     BinarySearchTree<Key, Value>::insert(new_item); // insert same as bst
-    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(new_item.first)); // node we inserted
-    AVLNode<Key, Value>* parent = node->getParent();
+
+    if (this->root_ == nullptr) 
+    {
+        this->root_ = new AVLNode<Key, Value>(keyValuePair.first, keyValuePair.second, nullptr);
+        return;
+    }
+
+    AVLNode<Key, Value>* current = root_;
+    AVLNode<Key, Value>* parent = nullptr;
+
+    while(current != nullptr) 
+    {
+        parent = current;
+        if(keyValuePair.first < current->getKey()) 
+        {
+            current = current->getLeft();
+        } 
+        else if(keyValuePair.first > current->getKey()) 
+        {
+            current = current->getRight();
+        } 
+        else 
+        {
+            current->setValue(keyValuePair.second);
+            return;
+        }
+    }
+
+    AVLNode<Key, Value>* newNode = new Node<Key, Value>(keyValuePair.first, keyValuePair.second, parent);
+    if(keyValuePair.first < parent->getKey()) 
+    {
+        parent->setLeft(newNode);
+    } 
+    else 
+    {
+        parent->setRight(newNode);
+    }
+
+
+    // balancing
+    // AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(new_item.first)); // node we inserted
+    // AVLNode<Key, Value>* parent = node->getParent();
 
     if(parent == nullptr) // no parent, no need for balancing
     {
