@@ -560,6 +560,8 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
     // }
     if(parent == nullptr) return;
     //std::cout << "insertfix called" << std::endl;
+    std::cout << "removeFix on " << node->getKey() << " with diff = " << (int)diff << "\n";
+    std::cout << "balance = " << (int)node->getBalance() << "\n";
 
     AVLNode<Key, Value>* grandparent = parent->getParent();
     if(grandparent == nullptr)
