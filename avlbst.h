@@ -672,21 +672,21 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
 
         if (grandparent->getBalance() == 0)
         {
-            std::cout << "insertFix stopped (balanced)\n";
+            //std::cout << "insertFix stopped (balanced)\n";
             return;
         }
         else if (grandparent->getBalance() == -1)
         {
-            std::cout << "insertFix recursing up (still unbalanced)\n";
+            //std::cout << "insertFix recursing up (still unbalanced)\n";
             insertFix(grandparent, parent);
         }
         else if (grandparent->getBalance() == -2)
         {
-            std::cout << "rebalance\n";
+            //std::cout << "rebalance\n";
             // Zig-Zig Left (left-left)
             if (parent->getLeft() == node)
             {
-                std::cout << "zig zig left\n";
+                //std::cout << "zig zig left\n";
                 rotateRight(grandparent);
                 parent->setBalance(0);
                 grandparent->setBalance(0);
@@ -694,7 +694,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
             // Zig-Zag Left-Right
             else if (parent->getRight() == node)
             {
-                std::cout << "zig zag left-right\n";
+                //std::cout << "zig zag left-right\n";
                 rotateLeft(parent);
                 rotateRight(grandparent);
 
@@ -725,21 +725,21 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
 
         if (grandparent->getBalance() == 0)
         {
-            std::cout << "insertFix stopped (balanced)\n";
+            //std::cout << "insertFix stopped (balanced)\n";
             return;
         }
         else if (grandparent->getBalance() == 1)
         {
-            std::cout << "insertFix recursing up (still unbalanced)\n";
+            //std::cout << "insertFix recursing up (still unbalanced)\n";
             insertFix(grandparent, parent);
         }
         else if (grandparent->getBalance() == 2)
         {
-            std::cout << "rebalance\n";
+            //std::cout << "rebalance\n";
             // Zig-Zig Right (right-right)
             if (parent->getRight() == node)
             {
-                std::cout << "zig zig right\n";
+                //std::cout << "zig zig right\n";
                 rotateLeft(grandparent);
                 parent->setBalance(0);
                 grandparent->setBalance(0);
@@ -747,7 +747,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
             // Zig-Zag Right-Left
             else if (parent->getLeft() == node)
             {
-                std::cout << "zig zag right-left\n";
+                //std::cout << "zig zag right-left\n";
                 rotateRight(parent);
                 rotateLeft(grandparent);
 
