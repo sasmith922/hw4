@@ -214,7 +214,7 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
         return;
     }
 
-    AVLNode<Key, Value>* current = this->root_;
+    AVLNode<Key, Value>* current = static_cast<AVLNode<Key, Value>*>(this->root_);
     AVLNode<Key, Value>* parent = nullptr;
 
     while(current != nullptr) 
