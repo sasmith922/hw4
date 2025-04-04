@@ -374,8 +374,6 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         }
     }
 
-    // patch tree
-    removeFix(parent, diff);
 
     // remove node
     // already found node
@@ -422,6 +420,8 @@ void AVLTree<Key, Value>:: remove(const Key& key)
             this->root_ = child; // when we delete the root
         }
 
+        // patch tree
+        removeFix(parent, diff);
         delete node;
         return;
     }
