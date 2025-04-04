@@ -656,6 +656,10 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
 
 
     AVLNode<Key, Value>* grandparent = parent->getParent();
+    if(grandparent == nullptr)
+    {
+        return;
+    }
 
     AVLNode<Key, Value>* child = nullptr;
     if(grandparent->getLeft() == parent)
