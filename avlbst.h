@@ -767,7 +767,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
 
 
     }
-    if(diff == 1) // mirrored, operating on right child
+    else if(diff == 1) // mirrored, operating on right child
     {
 
         if(node->getBalance() + diff == 2) // heavy on right
