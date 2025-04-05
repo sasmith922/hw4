@@ -586,6 +586,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                     node->setBalance(0);
                     child->setBalance(0);
                     grandch->setBalance(0);
+                    return;
                 }
                 else if(grandchBalance == -1)
                 {
@@ -656,6 +657,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                     node->setBalance(0);
                     child->setBalance(0);
                     grandch->setBalance(0);
+                    return;
                 }
                 else if(grandchBalance == 1)
                 {
