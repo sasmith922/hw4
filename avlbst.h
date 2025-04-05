@@ -312,7 +312,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     std::cout << "[remove] Removing key: " << key << std::endl;
 
 
-    AVLNode<Key, Value>* node = internalFind(key); // traverse node to be removed
+    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
 
     if (node == nullptr)
     {
@@ -322,7 +322,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     // Case 1: Node has two children
     if (node->getLeft() && node->getRight()) 
     {
-        AVLNode<Key, Value>* pred = predecessor(node);
+        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
         if (pred == nullptr)
         {
             return;
