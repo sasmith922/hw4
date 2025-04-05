@@ -513,10 +513,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         return;
     }
 
-    std::cout << "[removeFix] node: " << node->getKey() << ", diff: " << static_cast<int>(diff)
-          << ", balance: " << (int)node->getBalance()
-          << ", newBalance: " << (int)(node->getBalance() + diff) << std::endl;
-
     // compute recursive calls args
     AVLNode<Key, Value>* parent = node->getParent();
     int8_t ndiff = 0;
@@ -532,13 +528,16 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         }
     }
     // DO NOT OPERATE ON/WITH PARENT, SHOULD ONLY BE FOR RECURSIVE CALL
+
+    int8_t balance = node->getBalance();
+    int8_t newBalance = balance + diff;
     
 
     // balance cases
     if(diff == -1) // operating on left child
     {
        
-        if(node->getBalance() + diff == -2) // heavy on left
+        if(newBalance == -2) // heavy on left
         {
             std::cout << "[removeFix] Rotating at node " << node->getKey() << std::endl;
             AVLNode<Key, Value>* child = node->getLeft();
@@ -552,8 +551,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
                 rotateRight(node);
-                node->setBalance(-1);
-                child->setBalance(1);
+                node->setBalance(0);
+                child->setBalance(0);
                 return; // done early
                 //removeFix(parent, ndiff);//temp
             }
@@ -586,7 +585,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             
         }
-        else if(node->getBalance() + diff == -1)
+        else if(newBalance == -1)
         {
             node->setBalance(-1);
             // if(parent != nullptr)
@@ -595,7 +594,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             // }
             return; // done early
         }
-        else if(node->getBalance() + diff == 0)
+        else if(newBalance == 0)
         {
             node->setBalance(0);
             removeFix(parent, ndiff); // recursive call
@@ -607,7 +606,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     else if(diff == 1) // mirrored, operating on right child
     {
 
-        if(node->getBalance() + diff == 2) // heavy on right
+        if(newBalance == 2) // heavy on right
         {
             std::cout << "[removeFix] Rotating at node " << node->getKey() << std::endl;
             AVLNode<Key, Value>* child = node->getRight();   
@@ -621,8 +620,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
                 rotateLeft(node);
-                node->setBalance(1);
-                child->setBalance(-1);
+                node->setBalance(0);
+                child->setBalance(0);
                 return; // done early
                 //removeFix(parent, ndiff); // temp
             }
@@ -655,7 +654,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             
         }
-        else if(node->getBalance() + diff == 1)
+        else if(newBalance == 1)
         {
             node->setBalance(1);
             // if(parent != nullptr)
@@ -664,7 +663,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             // }
             return; // done early
         }
-        else if(node->getBalance() + diff == 0)
+        else if(newBalance == 0)
         {
             node->setBalance(0);
             removeFix(parent, ndiff); // recursive call
