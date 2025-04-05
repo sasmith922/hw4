@@ -849,10 +849,10 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
 
 
     }
-    // else // dont know if this is necessary, might be balanced anyways if triggered
-    // {
-    //     removeFix(parent, ndiff);
-    // }
+    else // dont know if this is necessary, might be balanced anyways if triggered
+    {
+        removeFix(parent, ndiff);
+    }
 
 
 }
