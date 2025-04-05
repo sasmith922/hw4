@@ -543,7 +543,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     if(diff == -1) // operating on left child
     {
        std::cout << "left child?" << std::endl;
-       std::cout << "newbalance is "<< newBalance << std::endl;
+       std::cout << "newbalance is "<< static_cast<int>(newBalance) << std::endl;
         if(newBalance == -2) // heavy on left
         {
             std::cout << "[!!!] Should rotate right at node " << node->getKey() << std::endl;
