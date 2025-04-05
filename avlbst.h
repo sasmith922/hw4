@@ -323,7 +323,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         int8_t temp = node->getBalance();
         node->setBalance(pred->getBalance());
         pred->setBalance(temp);
-        node = pred; // pred is now in the position to be deleted
+        //node = pred; // pred is now in the position to be deleted
     }
 
     // Now node has at most one child
