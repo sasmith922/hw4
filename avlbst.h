@@ -517,7 +517,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         return;
     }
 
-    std::cout << "remove fix called" << std::endl;
+    std::cout << "remove fix called on " << node->getValue() << std::endl;
 
     // compute recursive calls args
     AVLNode<Key, Value>* parent = node->getParent();
