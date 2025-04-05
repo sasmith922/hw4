@@ -309,7 +309,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     // TODO
 
     //std::cout << "called remove" << key << std::endl;
-    Node* node = static_cast<Node*>(this->internalFind(key));
+    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
     if (node == nullptr)
     {
         return;
@@ -317,22 +317,22 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
-        Node* pred = static_cast<Node*>(this->predecessor(node));
-        std::swap(node->getItem(), pred->getItem());
+        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
+        std::swap(node->item_, pred->item_);
         node = pred;
     }
 
-    Node* child = nullptr;
+    AVLNode<Key, Value>* child = nullptr;
     if (node->getLeft() != nullptr)
     {
-        child = node->getLeft();
+        child = static_cast<AVLNode<Key, Value>*>(node->getLeft());
     }
     else if (node->getRight() != nullptr)
     {
-        child = node->getRight();
+        child = static_cast<AVLNode<Key, Value>*>(node->getRight());
     }
 
-    Node* parent = static_cast<Node*>(node->getParent());
+    AVLNode<Key, Value>* parent = static_cast<AVLNode<Key, Value>*>(node->getParent());
 
     int diff = 0;
     if (parent != nullptr)
@@ -348,11 +348,12 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     }
 
     this->replaceNode(node, child);
+
     delete node;
 
     if (parent != nullptr)
     {
-        removeFix(parent, diff);
+        this->removeFix(parent, diff);
     }
     //done?
 
