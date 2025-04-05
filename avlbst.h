@@ -320,7 +320,10 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
         nodeSwap(pred, node);
-        //node = pred; // pred is now in the position to be deleted
+        int8_t temp = node->getBalance();
+        node->setBalance(pred->getBalance());
+        pred->setBalance(temp);
+        node = pred; // pred is now in the position to be deleted
     }
 
     // Now node has at most one child
@@ -563,32 +566,16 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             AVLNode<Key, Value>* child = node->getLeft();
             if(child->getBalance() == -1) // zig-zig case
             {
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateRight(node);
                 node->setBalance(0);
-                std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 child->setBalance(0);
-                std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 removeFix(parent, ndiff); // recursive call
             }
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateRight(node);
                 node->setBalance(-1);
-                std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 child->setBalance(1);
-                std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 return; // done early
                 //removeFix(parent, ndiff);//temp
             }
@@ -596,51 +583,25 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             {
                 AVLNode<Key, Value>* grandch = child->getRight(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateLeft(child);
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateRight(node);
                 if(grandchBalance == 1)
                 {
                     node->setBalance(0);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     child->setBalance(-1);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     grandch->setBalance(0);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 }
                 else if(grandchBalance == 0)
                 {
                     node->setBalance(0);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     child->setBalance(0);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     grandch->setBalance(0);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 }
                 else if(grandchBalance == -1)
                 {
                     node->setBalance(1);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     child->setBalance(0);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     grandch->setBalance(0);
-                    std::cout << "[removeFix:SET] node " << node->getKey()
-          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 }
                 removeFix(parent, ndiff); // recursive call
                 return; // ??
@@ -674,10 +635,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             AVLNode<Key, Value>* child = node->getRight();   
             if(child->getBalance() == 1) // zig-zig case
             {
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateLeft(node);
                 node->setBalance(0);
                 child->setBalance(0);
@@ -685,10 +642,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateLeft(node);
                 node->setBalance(1);
                 child->setBalance(-1);
@@ -699,15 +652,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             {
                 AVLNode<Key, Value>* grandch = child->getLeft(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateRight(child);
-                std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << child->getKey()
-          << ", child balance: " << (int)child->getBalance() << std::endl;
-
                 rotateLeft(node);
                 if(grandchBalance == -1)
                 {
