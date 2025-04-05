@@ -390,12 +390,12 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     else if(parent != nullptr && parent->getLeft() == node) // node is a left child
     {
         parent->setLeft(child);
-        diff = 1
+        diff = 1;
     }
     else if(parent != nullptr && parent->getRight() == node) // node is a right child
     {
         parent->setRight(child);
-        diff = -1
+        diff = -1;
     }
 
     //std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
