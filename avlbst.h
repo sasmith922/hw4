@@ -315,14 +315,18 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         return;
     }
 
+    AVLNode<Key, Value>* child = nullptr;
+    AVLNode<Key, Value>* parent = nullptr;
+    int diff = 0;
+
+    // Case: node has two children
     if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
-        std::swap(node->item_, pred->item_);
-        node = pred;
+        nodeSwap(node, pred);
     }
 
-    AVLNode<Key, Value>* child = nullptr;
+    // Now node has at most one child
     if (node->getLeft() != nullptr)
     {
         child = static_cast<AVLNode<Key, Value>*>(node->getLeft());
@@ -332,9 +336,8 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         child = static_cast<AVLNode<Key, Value>*>(node->getRight());
     }
 
-    AVLNode<Key, Value>* parent = static_cast<AVLNode<Key, Value>*>(node->getParent());
+    parent = static_cast<AVLNode<Key, Value>*>(node->getParent());
 
-    int diff = 0;
     if (parent != nullptr)
     {
         if (parent->getLeft() == node)
