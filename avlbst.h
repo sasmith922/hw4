@@ -445,6 +445,7 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
                     parent->setBalance(-1);
                     grandparent->setBalance(0);
                     node->setBalance(0);
+                }
             }
         }
     }
