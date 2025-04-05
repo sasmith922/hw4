@@ -650,6 +650,10 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         else if(node->getBalance() + diff == -1)
         {
             node->setBalance(-1);
+            if(parent != nullptr)
+            {
+                removeFix(parent, ndiff);
+            }
             return; // done early
         }
         else if(node->getBalance() + diff == 0)
