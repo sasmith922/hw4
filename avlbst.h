@@ -772,9 +772,10 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                     child->setBalance(0);
                     grandch->setBalance(0);
                 }
+                removeFix(parent, ndiff); // recursive call
+                return; // ??
             }
-            removeFix(parent, ndiff); // recursive call
-            return; // ??
+            
         }
         else if(node->getBalance() + diff == -1)
         {
@@ -835,9 +836,10 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                     child->setBalance(0);
                     grandch->setBalance(0);
                 }
+                removeFix(parent, ndiff); // recursive call
+                return; // ??
             }
-            removeFix(parent, ndiff); // recursive call
-            return; // ??
+            
         }
         else if(node->getBalance() + diff == 1)
         {
