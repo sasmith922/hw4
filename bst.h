@@ -543,67 +543,6 @@ void BinarySearchTree<Key, Value>::insert(const std::pair<const Key, Value> &key
 template<typename Key, typename Value>
 void BinarySearchTree<Key, Value>::remove(const Key& key)
 {
-    //std::cout << "remove called!" << std::endl;
-    // TODO
-    // if(root_ == nullptr) // base case, empty tree
-    // {
-    //     return;
-    // }
-
-    // BinarySearchTree<Key, Value> subtree;
-
-    // if(root_->getKey() == key) // found the node to be removed
-    // {
-    //     if(root_->getLeft() == nullptr && root_->getRight() == nullptr) // leaf node, no children
-    //     {
-    //         delete root_;
-    //         root_ = nullptr; // reset root node
-    //         return;
-    //     }
-    //     if(root_->getLeft() != nullptr && root_->getRight() == nullptr) // only a left child
-    //     {
-    //         Node<Key, Value>* leftChild = root_->getLeft();
-    //         leftChild->setParent(root_->getParent()); // update childs parent pointer to be roots parent
-    //         delete root_;
-    //         root_ = leftChild;
-    //         return;
-
-    //     }
-    //     if(root_->getLeft() == nullptr && root_->getRight() != nullptr) // only a right child
-    //     {
-    //         Node<Key, Value>* rightChild = root_->getRight();
-    //         rightChild->setParent(root_->getParent()); // update childs parent pointer to be roots parent
-    //         delete root_;
-    //         root_ = rightChild;
-    //         return;
-    //     }
-    //     // root has 2 children
-    //     Node<Key, Value>* pred = predecessor(root_);
-    //     nodeSwap(root_, pred); // swap root w predeccessor 
-    //     subtree.root_ = root_->getLeft(); // node we want to remove is now child in left subtree
-    //     subtree.remove(key); // recursively remove node from left subtree
-    //     root_->setLeft(subtree.root_);
-    //     return;
-    // }
-
-    // if(root_->getKey() > key) // recurse down left subtree
-    // {
-    //     subtree.root_ = root_->getLeft();
-    //     subtree.remove(key);
-    //     root_->setLeft(subtree.root_);
-    // }
-    // if(root_->getKey() < key) // recurse down right subtree
-    // {
-    //     subtree.root_ = root_->getRight();
-    //     subtree.remove(key);
-    //     root_->setRight(subtree.root_);
-    // }
-    // // done?
-
-    //std::cout << "remove called!" << std::endl;
-
-    //std::cout << "nodes init" << std::endl;
-
     Node<Key, Value>* node = internalFind(key); // traverse node to be removed
 
     if (node == nullptr)

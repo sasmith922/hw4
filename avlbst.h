@@ -312,80 +312,95 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     std::cout << "[remove] Removing key: " << key << std::endl;
 
 
-    AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
-    if (node == nullptr) return;
+    AVLNode<Key, Value>* node = internalFind(key); // traverse node to be removed
 
-    // Case 1: node has two children → swap with predecessor, reduce to 0/1-child case
-    if (node->getLeft() != nullptr && node->getRight() != nullptr)
+    if (node == nullptr)
     {
-        AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
-        nodeSwap(pred, node);
-        // int8_t temp = node->getBalance();
-        // node->setBalance(pred->getBalance());
-        // pred->setBalance(temp);
-        node = pred; // pred is now in the position to be deleted
+        return; // no key is found
     }
 
-    // Now node has at most one child
+    // Case 1: Node has two children
+    if (node->getLeft() && node->getRight()) 
+    {
+        AVLNode<Key, Value>* pred = predecessor(node);
+        if (pred == nullptr)
+        {
+            return;
+        }
+
+        nodeSwap(node, pred);
+
+        // relinking pointers after nodeswap
+        AVLNode<Key, Value>* child = node->getLeft(); // pred never has a right child
+        AVLNode<Key, Value>* parent = node->getParent();
+
+        // relink child parent pointer
+        if(child != nullptr) 
+        {
+            child->setParent(parent);
+        }
+
+        // relink parent pointer to child
+        if (parent != nullptr)
+        {
+            if (parent->getLeft() == node)
+            {
+                parent->setLeft(child);
+            } 
+            else if (parent->getRight() == node)
+            {
+                parent->setRight(child);
+            }
+        } 
+        else
+        {
+            this->root_ = child; // when we delete the root
+        }
+
+        delete node;
+        return;
+
+
+    }
+
+    // Case 2 & 3: Node has at most one child
+    //std::cout << "one child or leaf!" << std::endl;
     AVLNode<Key, Value>* child = nullptr;
-    if (node->getLeft() != nullptr)
+    if(node->getLeft()) 
     {
-        child = static_cast<AVLNode<Key, Value>*>(node->getLeft());
-    }
-    else if (node->getRight() != nullptr)
+        child = node->getLeft();
+    } 
+    else if(node->getRight()) 
     {
-        child = static_cast<AVLNode<Key, Value>*>(node->getRight());
-    }
-
-    AVLNode<Key, Value>* parent = static_cast<AVLNode<Key, Value>*>(node->getParent());
-    int diff = 0;
-
-    // IMPORTANT: compute diff BEFORE cutting the node from its parent
-    if (parent != nullptr)
-    {
-        if (parent->getLeft() == node)
-        {
-            diff = 1;
-        }
-        else
-        {
-            diff = -1;
-        }
+        child = node->getRight();
     }
 
-    // Reconnect child to parent
-    if (parent != nullptr)
-    {
-        // Compute diff FIRST
-        if (parent->getLeft() == node)
-            diff = 1;
-        else
-            diff = -1;
-
-        // THEN unlink the node
-        if (diff == 1)
-            parent->setLeft(child);
-        else
-            parent->setRight(child);
+    if (child != nullptr) {
+        child->setParent(node->getParent());
     }
-    else
+
+
+    AVLNode<Key, Value>* parent = node->getParent();
+    int8_t diff = 0;
+
+    if(node == this->root_)
     {
         this->root_ = child;
     }
-
-    if (child != nullptr)
+    else if(parent != nullptr && parent->getLeft() == node) // node is a left child
     {
-        child->setParent(parent);
+        parent->setLeft(child);
+        diff = 1
+    }
+    else if(parent != nullptr && parent->getRight() == node) // node is a right child
+    {
+        parent->setRight(child);
+        diff = -1
     }
 
+    //std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
     delete node;
-
-    if (parent != nullptr)
-    {
-        std::cout << "[remove] Calling removeFix on parent: " 
-          << parent->getKey() << " with diff: " << static_cast<int>(diff) << std::endl;
-        removeFix(parent, diff);
-    }
+    removeFix(parent, diff);
     //done?
 
 }
