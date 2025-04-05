@@ -320,10 +320,10 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
         nodeSwap(pred, node);
-        int8_t temp = node->getBalance();
-        node->setBalance(pred->getBalance());
-        pred->setBalance(temp);
-        //node = pred; // pred is now in the position to be deleted
+        // int8_t temp = node->getBalance();
+        // node->setBalance(pred->getBalance());
+        // pred->setBalance(temp);
+        node = pred; // pred is now in the position to be deleted
     }
 
     // Now node has at most one child
