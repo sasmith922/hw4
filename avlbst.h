@@ -609,7 +609,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         return;
     }
 
-    std::cout << "[removeFix] node: " << node->getKey() << ", diff: " << diff
+    std::cout << "[removeFix] node: " << node->getKey() << ", diff: " << static_cast<int>(diff)
           << ", balance: " << (int)node->getBalance()
           << ", newBalance: " << (int)(node->getBalance() + diff) << std::endl;
 
