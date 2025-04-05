@@ -23,16 +23,8 @@ bool equalPaths(Node * root)
         return true;
     }
 
-    // Node* leftChild = root->left;
-    // Node* rightChild = root->right;
-
-    // bool subtreesEqual = getLength(leftChild) == getLength(rightChild);  
-
-    // return equalPaths(leftChild) && equalPaths(rightChild) && subtreesEqual;
-
     int leafDepth = -1;
     return equalPathsHelper(root, 0, leafDepth);
-
 }
 
 int getLength(Node* root)
@@ -41,27 +33,24 @@ int getLength(Node* root)
     {
         return 0;
     }
-
-
     int leftDepth = getLength(root->left);
     int rightDepth = getLength(root->right);
 
     return 1 + max(leftDepth, rightDepth);
-
 }
 
 bool equalPathsHelper(Node* root, int depth, int& leafDepth)
 {
-    if (root == nullptr) return true;
+    if(root == nullptr) return true;
 
-    // If it's a leaf
-    if (root->left == nullptr && root->right == nullptr)
+    // is leaf
+    if(root->left == nullptr && root->right == nullptr)
     {
         if (leafDepth == -1) leafDepth = depth;
         return depth == leafDepth;
     }
 
-    // Check subtrees
+    // check subtrees
     return equalPathsHelper(root->left, depth + 1, leafDepth) &&
            equalPathsHelper(root->right, depth + 1, leafDepth);
 }
