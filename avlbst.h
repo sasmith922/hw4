@@ -428,22 +428,23 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
                 rotateRight(grandparent);
 
                 int b = node->getBalance();
-                if (b == 1)
+                if (b == -1)
                 {
                     parent->setBalance(0);
-                    grandparent->setBalance(-1);
+                    grandparent->setBalance(1);
+                    node->setBalance(0);
                 }
-                else if (b == -1)
-                {
-                    parent->setBalance(1);
-                    grandparent->setBalance(0);
-                }
-                else // b == 0
+                else if (b == 0)
                 {
                     parent->setBalance(0);
                     grandparent->setBalance(0);
+                    node->setBalance(0);
                 }
-                node->setBalance(0);
+                else if(b == 1)
+                {
+                    parent->setBalance(-1);
+                    grandparent->setBalance(0);
+                    node->setBalance(0);
             }
         }
     }
@@ -485,18 +486,20 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key, Value>* parent, AVLNode<Key, Va
                 {
                     parent->setBalance(0);
                     grandparent->setBalance(-1);
+                    node->setBalance(0);
                 }
-                else if (b == -1)
-                {
-                    parent->setBalance(1);
-                    grandparent->setBalance(0);
-                }
-                else // b == 0
+                else if (b == 0)
                 {
                     parent->setBalance(0);
                     grandparent->setBalance(0);
+                    node->setBalance(0);
                 }
-                node->setBalance(0);
+                else if(b == -1)
+                {
+                    parent->setBalance(1);
+                    grandparent->setBalance(0);
+                    node->setBalance(0);
+                }
             }
         }
     }
