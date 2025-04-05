@@ -552,7 +552,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             {
                 std::cout << "child is null" << std::endl;
             }
-            std::cout << "child balance is "<< static_cast<int8_t>(child->getBalance()) << std::endl;
+            std::cout << "child balance is " << static_cast<int>(child->getBalance()) << std::endl;
             if(child->getBalance() == -1) // zig-zig case
             {
                 rotateRight(node);
