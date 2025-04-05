@@ -745,7 +745,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                 rotateRight(node);
                 node->setBalance(-1);
                 child->setBalance(1);
-                //return; // done early
+                return; // done early
                 //removeFix(parent, ndiff);//temp
             }
             else if(child->getBalance() == 1) // zig-zag case
@@ -774,16 +774,18 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                 }
             }
             removeFix(parent, ndiff); // recursive call
+            return; // ??
         }
         else if(node->getBalance() + diff == -1)
         {
             node->setBalance(-1);
-            //return; // done early
+            return; // done early
         }
         else if(node->getBalance() + diff == 0)
         {
             node->setBalance(0);
             removeFix(parent, ndiff); // recursive call
+            return; // ??
         }
 
 
@@ -806,7 +808,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                 rotateLeft(node);
                 node->setBalance(1);
                 child->setBalance(-1);
-                //return; // done early
+                return; // done early
                 //removeFix(parent, ndiff); // temp
             }
             else if(child->getBalance() == -1) // zig-zag case
@@ -835,24 +837,26 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                 }
             }
             removeFix(parent, ndiff); // recursive call
+            return; // ??
         }
         else if(node->getBalance() + diff == 1)
         {
             node->setBalance(1);
-            //return; // done early
+            return; // done early
         }
         else if(node->getBalance() + diff == 0)
         {
             node->setBalance(0);
             removeFix(parent, ndiff); // recursive call
+            return; // ??
         }
 
 
     }
-    else // dont know if this is necessary, might be balanced anyways if triggered
-    {
-        removeFix(parent, ndiff);
-    }
+    // else // dont know if this is necessary, might be balanced anyways if triggered
+    // {
+    //     removeFix(parent, ndiff);
+    // }
 
 
 }
