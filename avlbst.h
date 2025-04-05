@@ -456,6 +456,8 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     if (parent != nullptr)
     {
+        std::cout << "[remove] Calling removeFix on parent: " 
+          << parent->getKey() << " with diff: " << static_cast<int>(diff) << std::endl;
         removeFix(parent, diff);
     }
     //done?
