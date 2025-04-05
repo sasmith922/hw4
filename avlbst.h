@@ -543,10 +543,12 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
     if(diff == -1) // operating on left child
     {
        std::cout << "left child?" << std::endl;
+       std::cout << "newbalance is "<< newBalance << std::endl;
         if(newBalance == -2) // heavy on left
         {
             std::cout << "[!!!] Should rotate right at node " << node->getKey() << std::endl;
             AVLNode<Key, Value>* child = node->getLeft();
+            std::cout << "child balance is "<< child->getBalance() << std::endl;
             if(child->getBalance() == -1) // zig-zig case
             {
                 rotateRight(node);
@@ -604,7 +606,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         }
         else if(newBalance == 0)
         {
-            std::cout << "newbalance " << std::endl;
             node->setBalance(0);
             removeFix(parent, ndiff); // recursive call
             return; // ??
