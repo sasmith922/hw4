@@ -607,7 +607,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             // {
             //     removeFix(parent, ndiff);
             // }
-            return; // done early
+            //return; // done early
         }
         else if(newBalance == 0)
         {
@@ -677,7 +677,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             // {
             //     removeFix(parent, ndiff);
             // }
-            return; // done early
+            //return; // done early
         }
         else if(newBalance == 0)
         {
