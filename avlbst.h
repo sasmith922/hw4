@@ -517,6 +517,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         return;
     }
 
+    std::cout << "remove fix called" << std::endl;
+
     // compute recursive calls args
     AVLNode<Key, Value>* parent = node->getParent();
     int8_t ndiff = 0;
@@ -562,6 +564,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             else if(child->getBalance() == 1) // zig-zag case
             {
+                std::cout << "left zig zag" << std::endl;
                 AVLNode<Key, Value>* grandch = child->getRight(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
                 rotateLeft(child);
