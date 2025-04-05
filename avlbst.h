@@ -636,8 +636,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             if(child->getBalance() == -1) // zig-zig case
             {
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << child->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateRight(node);
                 node->setBalance(0);
@@ -647,8 +647,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << chil->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateRight(node);
                 node->setBalance(-1);
@@ -661,13 +661,13 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                 AVLNode<Key, Value>* grandch = child->getRight(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << child->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateLeft(child);
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << child->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateRight(node);
                 if(grandchBalance == 1)
@@ -717,8 +717,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             if(child->getBalance() == 1) // zig-zig case
             {
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << child->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateLeft(node);
                 node->setBalance(0);
@@ -728,8 +728,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << child->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateLeft(node);
                 node->setBalance(1);
@@ -742,13 +742,13 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                 AVLNode<Key, Value>* grandch = child->getLeft(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << child->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateRight(child);
                 std::cout << "  >> Rotating at node " << node->getKey()
-          << ", child: " << c->getKey()
-          << ", child balance: " << (int)c->getBalance() << std::endl;
+          << ", child: " << child->getKey()
+          << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateLeft(node);
                 if(grandchBalance == -1)
