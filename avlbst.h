@@ -548,10 +548,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
         {
             std::cout << "[!!!] Should rotate right at node " << node->getKey() << std::endl;
             AVLNode<Key, Value>* child = node->getLeft();
-            if(child == nullptr)
-            {
-                std::cout << "child is null" << std::endl;
-            }
             std::cout << "child balance is " << static_cast<int>(child->getBalance()) << std::endl;
             if(child->getBalance() == -1) // zig-zig case
             {
@@ -563,8 +559,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
                 rotateRight(node);
-                node->setBalance(0);
-                child->setBalance(0);
+                node->setBalance(-1);
+                child->setBalance(1);
                 return; // done early
                 //removeFix(parent, ndiff);//temp
             }
@@ -586,7 +582,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                     node->setBalance(0);
                     child->setBalance(0);
                     grandch->setBalance(0);
-                    return;
                 }
                 else if(grandchBalance == -1)
                 {
@@ -635,8 +630,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
             {
                 rotateLeft(node);
-                node->setBalance(0);
-                child->setBalance(0);
+                node->setBalance(1);
+                child->setBalance(-1);
                 return; // done early
                 //removeFix(parent, ndiff); // temp
             }
@@ -657,7 +652,6 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                     node->setBalance(0);
                     child->setBalance(0);
                     grandch->setBalance(0);
-                    return;
                 }
                 else if(grandchBalance == 1)
                 {
