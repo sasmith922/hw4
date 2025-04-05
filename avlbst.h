@@ -327,38 +327,11 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         {
             return;
         }
-
         nodeSwap(node, pred);
+        node = pred;
 
-        // relinking pointers after nodeswap
-        AVLNode<Key, Value>* child = node->getLeft(); // pred never has a right child
-        AVLNode<Key, Value>* parent = node->getParent();
-
-        // relink child parent pointer
-        if(child != nullptr) 
-        {
-            child->setParent(parent);
-        }
-
-        // relink parent pointer to child
-        if (parent != nullptr)
-        {
-            if (parent->getLeft() == node)
-            {
-                parent->setLeft(child);
-            } 
-            else if (parent->getRight() == node)
-            {
-                parent->setRight(child);
-            }
-        } 
-        else
-        {
-            this->root_ = child; // when we delete the root
-        }
-
-        delete node;
-        return;
+        // delete node;
+        // return;
 
 
     }
@@ -379,23 +352,31 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         child->setParent(node->getParent());
     }
 
-
     AVLNode<Key, Value>* parent = node->getParent();
     int8_t diff = 0;
 
-    if(node == this->root_)
+    if (parent != nullptr)
+    {
+        if (parent->getLeft() == node)
+        {
+            diff = 1;
+            parent->setLeft(child);
+        }
+        else
+        {
+            diff = -1;
+            parent->setRight(child);
+        }
+    }
+    else
     {
         this->root_ = child;
     }
-    else if(parent != nullptr && parent->getLeft() == node) // node is a left child
+
+    // Step 6: Update child's parent
+    if (child != nullptr)
     {
-        parent->setLeft(child);
-        diff = 1;
-    }
-    else if(parent != nullptr && parent->getRight() == node) // node is a right child
-    {
-        parent->setRight(child);
-        diff = -1;
+        child->setParent(parent);
     }
 
     //std::cout << "Ready to delete node with key: " << node->getKey() << std::endl;
