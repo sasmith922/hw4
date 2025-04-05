@@ -583,10 +583,10 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
           << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateRight(node);
-                node->setBalance(0);
+                node->setBalance(-1);
                 std::cout << "[removeFix:SET] node " << node->getKey()
           << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
-                child->setBalance(0);
+                child->setBalance(1);
                 std::cout << "[removeFix:SET] node " << node->getKey()
           << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 return; // done early
@@ -690,8 +690,8 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
           << ", child balance: " << (int)child->getBalance() << std::endl;
 
                 rotateLeft(node);
-                node->setBalance(0);
-                child->setBalance(0);
+                node->setBalance(1);
+                child->setBalance(-1);
                 return; // done early
                 //removeFix(parent, ndiff); // temp
             }
