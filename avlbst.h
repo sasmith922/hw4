@@ -310,14 +310,12 @@ void AVLTree<Key, Value>:: remove(const Key& key)
 
     //std::cout << "called remove" << key << std::endl;
     AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(key));
-    if (node == nullptr)
-    {
-        return;
-    }
+    if (node == nullptr) return;
 
     AVLNode<Key, Value>* parent = static_cast<AVLNode<Key, Value>*>(node->getParent());
-    int diff = 0;
+    int8_t diff = 0;
 
+    // Case: Two children -> Swap with predecessor
     if (node->getLeft() != nullptr && node->getRight() != nullptr)
     {
         AVLNode<Key, Value>* pred = static_cast<AVLNode<Key, Value>*>(this->predecessor(node));
@@ -325,6 +323,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         parent = static_cast<AVLNode<Key, Value>*>(node->getParent());
     }
 
+    // Now delete the node (it has at most one child)
     AVLNode<Key, Value>* child = nullptr;
     if (node->getLeft() != nullptr)
     {
@@ -340,6 +339,7 @@ void AVLTree<Key, Value>:: remove(const Key& key)
         child->setParent(parent);
     }
 
+    // Remove node from parent
     if (parent == nullptr)
     {
         this->root_ = child;
@@ -539,7 +539,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
        
         if(newBalance == -2) // heavy on left
         {
-            std::cout << "[removeFix] Rotating at node " << node->getKey() << std::endl;
+            std::cout << "[!!!] Should rotate right at node " << node->getKey() << std::endl;
             AVLNode<Key, Value>* child = node->getLeft();
             if(child->getBalance() == -1) // zig-zig case
             {
