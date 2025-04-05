@@ -235,83 +235,6 @@ void AVLTree<Key, Value>::insert (const std::pair<const Key, Value> &new_item)
 {
     // TODO
 
-    // if(this->root_ == nullptr) // empty tree
-    // {
-    //     this->root_ = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
-    //     return;
-    // }
-
-    // //insert
-
-    // // BinarySearchTree<Key, Value>::insert(new_item); // insert same as bst
-
-    // if (this->root_ == nullptr) 
-    // {
-    //     this->root_ = new AVLNode<Key, Value>(new_item.first, new_item.second, nullptr);
-    //     return;
-    // }
-
-    // AVLNode<Key, Value>* current = static_cast<AVLNode<Key, Value>*>(this->root_);
-    // AVLNode<Key, Value>* parent = nullptr;
-
-    // while(current != nullptr) // walking to node
-    // {
-    //     parent = current;
-    //     if(new_item.first < current->getKey()) 
-    //     {
-    //         current = current->getLeft();
-    //     } 
-    //     else if(new_item.first > current->getKey()) 
-    //     {
-    //         current = current->getRight();
-    //     } 
-    //     else 
-    //     {
-    //         current->setValue(new_item.second);
-    //         return;
-    //     }
-    // }
-
-    // AVLNode<Key, Value>* newNode = new AVLNode<Key, Value>(new_item.first, new_item.second, parent);
-    // if(new_item.first < parent->getKey()) 
-    // {
-    //     parent->setLeft(newNode);
-    // } 
-    // else 
-    // {
-    //     parent->setRight(newNode);
-    // }
-
-
-    // // balancing
-    // // AVLNode<Key, Value>* node = static_cast<AVLNode<Key, Value>*>(this->internalFind(new_item.first)); // node we inserted
-    // // AVLNode<Key, Value>* parent = node->getParent();
-
-
-    // if(parent == nullptr) // no parent, no need for balancing
-    // {
-    //     return;
-    // }
-    
-    // // update balances
-    // newNode->setBalance(0);
-    // if(parent->getBalance() == -1 || parent->getBalance() == 1)
-    // {
-    //     parent->setBalance(0);
-    // }
-    // else if(parent->getBalance() == 0)
-    // {
-    //     if(parent->getLeft() == newNode) // node is left of parent
-    //     {
-    //         parent->setBalance(-1);
-    //     }
-    //     if(parent->getRight() == newNode) // node is right of parent
-    //     {
-    //         parent->setBalance(1);
-    //     }
-    //     insertFix(parent, newNode); // call insertFix!!!
-    // }
-
     // If tree is empty, create root
     if(this->root_ == nullptr)
     {
@@ -646,7 +569,11 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
 
                 rotateRight(node);
                 node->setBalance(0);
+                std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 child->setBalance(0);
+                std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 removeFix(parent, ndiff); // recursive call
             }
             else if(child->getBalance() == 0) // zig-zig case, although doesnt rly matter
@@ -657,7 +584,11 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
 
                 rotateRight(node);
                 node->setBalance(0);
+                std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 child->setBalance(0);
+                std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 return; // done early
                 //removeFix(parent, ndiff);//temp
             }
@@ -678,20 +609,38 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
                 if(grandchBalance == 1)
                 {
                     node->setBalance(0);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     child->setBalance(-1);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     grandch->setBalance(0);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 }
                 else if(grandchBalance == 0)
                 {
                     node->setBalance(0);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     child->setBalance(0);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     grandch->setBalance(0);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 }
                 else if(grandchBalance == -1)
                 {
                     node->setBalance(1);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     child->setBalance(0);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                     grandch->setBalance(0);
+                    std::cout << "[removeFix:SET] node " << node->getKey()
+          << " final balance = " << static_cast<int>(node->getBalance()) << std::endl;
                 }
                 removeFix(parent, ndiff); // recursive call
                 return; // ??
