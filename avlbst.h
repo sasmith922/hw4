@@ -430,14 +430,17 @@ void AVLTree<Key, Value>:: remove(const Key& key)
     // Reconnect child to parent
     if (parent != nullptr)
     {
+        // Compute diff FIRST
         if (parent->getLeft() == node)
-        {
-            parent->setLeft(child);
-        }
+            diff = 1;
         else
-        {
+            diff = -1;
+
+        // THEN unlink the node
+        if (diff == 1)
+            parent->setLeft(child);
+        else
             parent->setRight(child);
-        }
     }
     else
     {
