@@ -564,7 +564,7 @@ void AVLTree<Key, Value>::removeFix(AVLNode<Key, Value>* node, int8_t diff)
             }
             else if(child->getBalance() == 1) // zig-zag case
             {
-                std::cout << "left zig zag" << std::endl;
+                std::cout << "left zig zag on " << node->getValue() << std::endl;
                 AVLNode<Key, Value>* grandch = child->getRight(); // declare grandchild node here, only used in zig-zag case
                 int8_t grandchBalance = grandch->getBalance();
                 rotateLeft(child);
